@@ -1,0 +1,395 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;600&display=swap");
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: "Montserrat", sans-serif;
+  color: #222;
+}
+
+.navbar {
+  background-color: #fff !important;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.jumbotron {
+  /*border: 1px solid red;*/
+  background-color: #edf3f8;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.jumbotron .col-12 {
+  /*border: 1px solid red;*/
+  margin: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.jumbotron .col-12 h2 {
+  margin-top: 20px;
+}
+
+.rounded-circle {
+  width: 38% !important;
+
+  border: 5px solid #fff;
+}
+
+.nav-link {
+  letter-spacing: 1.7px;
+  color: #606962 !important;
+}
+
+.navbar-brand {
+  font-family: "Noto Sans", sans-serif;
+  letter-spacing: 1.7px;
+}
+
+.two-column-section {
+  /*border: 1px solid red;*/
+  margin-top: 20px;
+}
+
+.two-column-section .row .text-center p {
+  line-height: 1.8em;
+  text-align: justify;
+}
+
+.contact {
+  /*border: 1px solid red;*/
+  display: flex;
+  justify-content: center;
+}
+
+.about {
+  /*border: 1px solid red;*/
+  display: flex;
+  justify-content: center;
+}
+
+.social {
+  /*border: 1px solid red;*/
+  display: flex;
+  justify-content: space-between;
+}
+
+.github {
+  color: #524764;
+}
+
+.github:hover {
+  color: #7d7886;
+}
+
+.linkedin {
+  color: #0e76a8;
+}
+
+.linkedin:hover {
+  color: #6ca6c0;
+}
+
+.email {
+  color: #cc0000;
+}
+
+.email:hover {
+  color: #be6262;
+}
+
+.two-column-section .row .text-center {
+  font-family: "Raleway", sans-serif;
+}
+
+.about h2 {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+}
+
+.two-column-section .row .text-center p {
+  font-size: 20px;
+}
+
+.two-column-section .row .text-center h2 {
+  font-weight: 500;
+}
+
+footer {
+  /*border: 1px solid red;*/
+  color: #606962 !important;
+}
+
+/* PROJECTS STYLE */
+
+.active {
+  font-weight: bold;
+}
+
+.projects {
+  /*border: 1px solid red;*/
+  display: flex;
+  justify-content: center;
+}
+
+.proj-container {
+  /*border: 1px solid red;*/
+  display: flex;
+  justify-content: center;
+
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.proj-item {
+  /*border: 1px solid red;*/
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #b3b3b3; /* RIPARTI DA QUA! */
+  margin-top: 30px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.proj-item:first-of-type {
+  margin-top: 80px;
+}
+
+.proj-item:last-of-type {
+  border-bottom: none;
+  margin-bottom: 80px;
+}
+
+.proj-item h3 a,
+.proj-item p a {
+  text-decoration: none;
+}
+
+.proj-text h3 a:hover {
+  text-decoration: underline;
+}
+
+.proj-img {
+  /*border: 1px solid red;*/
+
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.proj-text {
+  /*border: 1px solid red;*/
+  text-align: justify;
+  font-family: "Raleway", sans-serif;
+  line-height: 1.8em;
+}
+
+.proj-text h3 {
+  text-align: center;
+}
+
+.proj-item-img {
+  width: 20vh;
+  height: 20vh;
+  border: 3px solid #c3c6c8;
+  border-radius: 13px;
+}
+
+@media (min-width: 600px) {
+  .lead {
+    width: 60%;
+  }
+
+  .two-column-section .row .text-center h2,
+  .two-column-section .row .text-center p {
+    width: 50%;
+  }
+
+  .two-column-section .row .text-center {
+    /*border: 1px solid red;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .contact .row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .social {
+    width: 40%;
+  }
+
+  .fa-github,
+  .fa-linkedin-in,
+  .fa-envelope {
+    font-size: 2.3em;
+  }
+
+  /* PROJECTS STYLE */
+  .proj-container {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .attempt,
+  .navbar-nav {
+    /*border: 1px solid red;*/
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
+
+  .collapse,
+  .navbar-nav {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    margin-top: -13px;
+    margin-bottom: -13px;
+  }
+
+  .navbar-nav {
+    /*border: 1px solid blue;*/
+    /*width: 13%;*/
+    margin-right: -10px;
+  }
+
+  .nav-item {
+    /*border: 1px solid red;*/
+    width: 100%;
+  }
+
+  .nav-link {
+    /*border: 1px solid red;*/
+    font-size: 1.1em !important;
+
+    padding-top: 17px;
+    padding-bottom: 17px;
+    margin-top: -12px;
+    margin-bottom: -12px;
+    text-align: center;
+  }
+
+  .nav-link:hover {
+    color: #0385db !important;
+    box-shadow: 0 2px 0 #0385db;
+    text-decoration: none;
+  }
+
+  .navbar-brand {
+    font-size: 25px !important;
+  }
+
+  .navbar-brand:hover {
+    color: #0385db !important;
+  }
+
+  .rounded-circle {
+    width: 15% !important;
+  }
+
+  .jumbotron .col-12 h2,
+  .jumbotron .col-12 p {
+    width: 45%;
+  }
+
+  .jumbotron .col-12 p a {
+    text-decoration: none;
+  }
+
+  .jumbotron .col-12 p a:hover {
+    text-decoration: underline;
+  }
+
+  .two-column-section .row .text-center h2,
+  .two-column-section .row .text-center p {
+    width: 70%;
+  }
+
+  .contact .row {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    /*border: 1px solid red;*/
+  }
+
+  .about {
+    height: 9%;
+  }
+
+  .social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 20px;
+    height: 25%;
+  }
+
+  .github,
+  .linkedin,
+  .email {
+    /*border: 1px solid red;*/
+    height: 60px;
+    width: 60px;
+  }
+
+  .fa-github,
+  .fa-linkedin-in {
+    font-size: 2.8em;
+  }
+
+  .fa-envelope {
+    font-size: 2.5em;
+  }
+
+  /* PROJECTS STYLE */
+
+  .active {
+    font-weight: normal;
+    box-shadow: 0 2px 0 #0385db;
+  }
+
+  .proj-container {
+    padding-right: 12px;
+    margin-right: -12px;
+    width: 75%;
+  }
+
+  .proj-item {
+    padding-right: 25px;
+    margin-right: -25px;
+  }
+
+  .proj-text h3 {
+    text-align: left;
+  }
+
+  .proj-text p {
+    font-size: 19px;
+  }
+}
+
+@media (min-width: 1240px) {
+  .social {
+    height: 35%;
+    margin-top: 15px;
+  }
+
+  /* PROJECTS STYLE */
+
+  .proj-container {
+    width: 55%;
+  }
+}
