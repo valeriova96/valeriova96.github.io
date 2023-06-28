@@ -67,16 +67,16 @@ body {
   justify-content: center;
 }
 
+
 .about {
-  /*border: 1px solid red;*/
+  /*border: 1px solid orange;*/
   display: flex;
   justify-content: center;
 }
 
 .social {
-  /*border: 1px solid red;*/
-  display: flex;
-  justify-content: space-between;
+  /*border: 1px solid green;*/
+  height: 100%;
 }
 
 .github {
@@ -391,5 +391,13 @@ footer {
 
   .proj-container {
     width: 55%;
+  }
+
+  .contact > .container-fluid > .about-row {
+    height: 10%;
+  }
+  
+  .contact > .container-fluid > .social-row {
+    height: 90%;
   }
 }
