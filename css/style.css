@@ -37,8 +37,6 @@ body {
 
 .rounded-circle {
   width: 38% !important;
-
-  border: 5px solid #fff;
 }
 
 .nav-link {
@@ -295,7 +293,7 @@ footer {
   }
 
   .rounded-circle {
-    width: 15% !important;
+    width: 25% !important;
   }
 
   .jumbotron .col-12 h2,
