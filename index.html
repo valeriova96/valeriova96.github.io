@@ -465,19 +465,35 @@
         </a>
       </div>
       <div class="bg-dark-800 rounded-lg shadow-md p-8 max-w-2xl mx-auto gradient-border">
-        <form>
+        <form action="https://formspree.io/f/movlqqpz" method="POST">
           <div class="mb-6">
             <label for="name" class="block text-gray-300 mb-2">Name</label>
-            <input type="text" id="name"
+            <input type="text" name="name" id="name" required
               class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white">
           </div>
           <div class="mb-6">
             <label for="email" class="block text-gray-300 mb-2">Email</label>
-            <input type="email" id="email"
+            <input type="email" name="email" id="email" required
               class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white">
           </div>
           <div class="mb-6">
             <label for="message" class="block text-gray-300 mb-2">Message</label>
-            <textarea id="message" rows="5"
+            <textarea name="message" id="message" rows="5" required
               class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white"></textarea>
           </div>
+          <div class="mb-6">
+          <label class="inline-flex items-start space-x-2">
+            <input type="checkbox" name="privacy" required class="mt-1">
+            <span class="text-sm text-gray-300">
+              I agree to the
+              <a href="/privacy.html" target="_blank" class="underline text-primary-500 hover:text-primary-400">
+                Privacy Policy
+              </a>
+            </span>
+          </label>
+          </div>
+          <button type="submit"
+            class="bg-primary-600 text-dark-900 px-6 py-3 rounded-lg hover:bg-primary-500 transition font-bold">
+            Send Message
+          </button>
+        </form>
