@@ -1,140 +1,483 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Always include this meta below to ensure proper mobile render -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Bootstrap CSS file -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
-      crossorigin="anonymous"
-    />
-    <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-    <title>Valerio Valente</title>
-  </head>
-  <body>
-    <!-- NAVIGATION -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-      <div class="container-fluid attempt">
-        <a href="index.html" class="navbar-brand text-uppercase"
-          >Valerio Valente</a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarResponsive"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a href="projects.html" class="nav-link">Projects</a>
-            </li>
-            <li class="nav-item">
-              <a
-                href="valerio_valente_resume.pdf"
-                target="_blank"
-                class="nav-link"
-                >Resume</a
-              >
-            </li>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <title>Valerio Valente | MLOps Engineer</title>
+  <meta name="description" content="MLOps specialist building production-grade machine learning systems">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12'
+            },
+            dark: {
+              900: '#0a0a0a',
+              800: '#1a1a1a',
+              700: '#2a2a2a',
+              600: '#3a3a3a'
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
+    }
+
+    .glow-text {
+      text-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+    }
+
+    .gradient-border {
+      border: 2px solid transparent;
+      background: linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+        linear-gradient(to right, #f97316, #c2410c) border-box;
+    }
+
+    .terminal-style {
+      background: rgba(26, 26, 26, 0.8);
+      border-left: 3px solid #f97316;
+    }
+
+    ::selection {
+      background: #f97316;
+      color: #0a0a0a;
+    }
+
+    .cert-badge {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-badge::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(to bottom, #f97316, #c2410c);
+    }
+
+    .project-card {
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Animated background elements -->
+  <div class="fixed inset-0 overflow-hidden -z-10">
+    <div class="absolute top-20 left-1/4 w-2 h-2 rounded-full bg-primary-500 opacity-20 animate-pulse-slow"></div>
+    <div class="absolute top-1/3 right-1/3 w-3 h-3 rounded-full bg-primary-400 opacity-30 animate-float"></div>
+    <div class="absolute bottom-1/4 left-1/5 w-1 h-1 rounded-full bg-primary-600 opacity-40 animate-pulse-slow"></div>
+  </div>
+
+  <header class="bg-dark-800 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-dark-700">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center text-2xl font-bold text-primary-500">
+        V
+        <div class="text-2xl font-bold text-primary-50">V</div>
+      </div>
+      <div class="hidden md:flex space-x-8">
+        <a href="#about" class="hover:text-primary-400 transition-colors">About</a>
+        <a href="#experience" class="hover:text-primary-400 transition-colors">Journey</a>
+        <a href="#achievements" class="hover:text-primary-400 transition-colors">Achievements</a>
+        <a href="#projects" class="hover:text-primary-400 transition-colors">Work</a>
+        <a href="#contact" class="hover:text-primary-400 transition-colors">Connect</a>
+      </div>
+      <button id="mobile-menu-button" class="md:hidden focus:outline-none text-primary-500">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+    </nav>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-dark-800 w-full px-6 pb-4">
+      <div class="flex flex-col space-y-4">
+        <a href="#about" class="hover:text-primary-400 transition-colors">About</a>
+        <a href="#experience" class="hover:text-primary-400 transition-colors">Journey</a>
+        <a href="#achievements" class="hover:text-primary-400 transition-colors">Achievements</a>
+        <a href="#projects" class="hover:text-primary-400 transition-colors">Work</a>
+        <a href="#contact" class="hover:text-primary-400 transition-colors">Connect</a>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      // Toggle between bars and times icon
+      const icon = this.querySelector('i');
+      if (icon.classList.contains('fa-bars')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+  </script>
+
+  <main class="container mx-auto px-6 py-12">
+    <!-- Hero Section -->
+    <section id="about" class="mb-28">
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/3 relative">
+          <div class="gradient-border rounded-full p-1 w-64 h-64 mx-auto">
+            <img src="images/me1.jpg" alt="Valerio Valente professional portrait"
+              class="rounded-full w-full h-full object-cover">
+          </div>
+          <div
+            class="absolute -bottom-5 -right-5 bg-primary-600 text-dark-900 px-4 py-2 rounded-lg font-mono text-sm font-bold">
+            Data Scientist → MLOps Engineer
+          </div>
+        </div>
+        <div class="md:w-2/3">
+          <h1 class="text-5xl text-primary-500 font-bold mb-4">Valerio <span class="text-primary-50">Valente</span></h1>
+          <h2 class="text-2xl text-primary-400 mb-6 font-mono">$ whoami</h2>
+          <div class="terminal-style p-6 mb-6 rounded-lg">
+            <p class="text-lg mb-4">Building robust ML systems that scale beyond notebooks.</p>
+            <p class="text-gray-400">If you love diving into details rather than skimming the surface, we're on the same wavelength.
+              Currently, I'm immersed in the exciting worlds of data and machine learning, always eager to learn and grow.
+              When I'm not coding, you'll find me exploring nature, lost in a compelling book or manga. I'm also passionate about
+              sourdough and its creations—bread, pizza, anything that rises with yeast fascinates me.
+              Curious to know some of my work? Check out the <b>work</b> section.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-4">
+            <a href="#contact"
+              class="bg-primary-600 text-dark-900 px-6 py-3 rounded-lg hover:bg-primary-500 transition font-bold flex items-center">
+              <i class="fas fa-terminal mr-2"></i> Get in touch
+            </a>
+            <a href="https://github.com/valeriova96" target="_blank"
+              class="border border-primary-600 text-primary-500 px-6 py-3 rounded-lg hover:bg-dark-700 transition flex items-center">
+              <i class="fab fa-github mr-2"></i> Explore my GitHub
+            </a>
+            <a href="path/to/your/resume.pdf" download="Valerio_Valente_Resume.pdf"
+              class="border border-primary-600 text-primary-500 px-6 py-3 rounded-lg hover:bg-dark-700 transition flex items-center">
+              <i class="fas fa-file-download mr-2"></i> Download Resume
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="mb-28">
+      <h2 class="text-3xl font-bold mb-12 text-center">
+        <span class="text-primary-500">$</span> Professional Journey
+      </h2>
+      <div class="space-y-8">
+
+        <!-- Current Role -->
+        <div class="border p-6 rounded-lg hover:border-primary-500/50 transition">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h3 class="text-xl font-bold text-primary-400">Data Scientist</h3>
+              <p class="text-gray-400">InSilicoTrials Technologies</p>
+            </div>
+            <div class="bg-primary-900/30 text-primary-400 px-3 py-1 rounded-full text-sm font-mono">
+              April 2025 – Present
+            </div>
+          </div>
+          <ul class="list-disc pl-5 text-gray-300 space-y-2">
+            <li>Synthetic Data Generation</li>
+            <li>Agentic AI and Model Context Protocol</li>
+            <li>Explainable AI</li>
+            <li>Production of POCs for clients</li>
+            <li>Deployment and monitoring of models on Azure</li>
           </ul>
         </div>
-      </div>
-    </nav>
-    <!-- WELCOME SECTION -->
-    <div class="container-fluid">
-    <div class="row jumbotron d-flex justify-content-center">
-      <div class="col-12 text-center">
-        <img
-          class="rounded-circle"
-          src="images/me1.jpg"
-          alt="Valerio image"
-        />
-        <h2 class="display-6">Valerio Valente</h2>
-        <p class="lead">
-          Welcome! I'm Valerio, a passionate Data Scientist currently crafting insights at
-          <a href="https://insilicotrials.com/" target="_blank">InSilicoTrials</a>.
-        </p>
-      </div>
-    </div>
-  </div>
-    <!-- 2 COLUMN SECTION -->
-    <div class="container-fluid padding two-column-section">
-      <div class="row padding">
-        <div class="col-md-12 col-lg-6 text-center">
-          <h2>About me</h2>
-          <p>
-          If you love diving into details rather than skimming the surface, we're on the same wavelength.
-          <br />Currently, I'm immersed in the exciting worlds of data and machine learning, always eager to learn and grow.
-          <br />When I'm not coding, you'll find me exploring nature, lost in a compelling book or manga. I'm also passionate about sourdough and its creations—bread, pizza, anything that rises with yeast fascinates me.
-          <br />Curious to see some of my work? Check out the <a style="text-decoration: none" href="projects.html"><b>projects</b></a> section.
-        </p>
+
+        <!-- Previous Roles -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- InSilicoTrials (Junior) -->
+          <div class="bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition">
+            <h3 class="text-lg font-bold text-primary-400 mb-2">Junior Data Scientist</h3>
+            <p class="text-gray-400 mb-3">InSilicoTrials Technologies | April 2024 – April 2025</p>
+            <ul class="list-disc pl-5 text-gray-300 space-y-1 text-sm">
+              <li>Dataset cleaning & model training</li>
+              <li>Python packages for internal use aimed to simplify day-to-day coding AI-related</li>
+              <li>Coding interviews and onboarding of new data scientists</li>
+            </ul>
+          </div>
+
+          <!-- Miraitek -->
+          <div class="bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition">
+            <h3 class="text-lg font-bold text-primary-400 mb-2">Junior Data Scientist</h3>
+            <p class="text-gray-400 mb-3">Miraitek srl | September 2023 – April 2024</p>
+            <ul class="list-disc pl-5 text-gray-300 space-y-1 text-sm">
+              <li>RAG on AWS</li>
+              <li>Anomaly detection algorithms</li>
+              <li>BI dashboards with SQL for manufacturing analytics</li>
+            </ul>
+          </div>
+
         </div>
-        <div class="col-lg-6 col-md-12 contact">
-          <div class="container-fluid">
-            <div class="row about-row">
-              <div class="col about">
-                <h2 class="about-element">Contact</h2>
+      </div>
+    </section>
+
+    <!-- Awards & Certifications Section -->
+    <section id="achievements" class="mb-28">
+      <h2 class="text-3xl font-bold mb-12 text-center">
+        <span class="text-primary-500">#</span> Awards & Certifications
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Certification 1 -->
+        <div class="cert-badge bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/30 transition">
+          <div class="flex items-start gap-6">
+            <!-- Left: Icon & Text -->
+            <div class="flex-1">
+              <div class="flex items-start mb-4">
+                <div class="text-primary-500 text-2xl mr-4">
+                  <i class="fas fa-certificate"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg mb-1">Deploying Machine Learning Models in Production</h3>
+                  <p class="text-gray-400 text-sm">Deeplearning.ai • Aug 2024</p>
+                </div>
               </div>
+              <p class="text-gray-300">
+                <a href="https://www.coursera.org/account/accomplishments/verify/OC06EOAHREQU" target="_blank"
+                  class="text-primary-200 hover:text-primary-500">Credential ID
+                  OC06EOAHREQU</a>
+              </p>
             </div>
-            <div class="row social-row">
-              <div class="col text-center social1">
-                <a
-                  class="github"
-                  href="https://github.com/valeriova96"
-                  target="_blank"
-                >
-                  <i class="fab fa-github fa-2x"></i>
-                </a>
-              </div>
-              <div class="col text-center social2">
-                <a
-                  class="linkedin"
-                  href="https://www.linkedin.com/in/valerio-valente-222382190/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3BmdmwvbRxQSuPLw8sUkKU0g%3D%3D"
-                  target="_blank"
-                >
-                  <i class="fab fa-linkedin-in fa-2x"></i>
-                </a>
-              </div>
-              <div class="col text-center social3">
-                <a
-                  class="email"
-                  href="mailto: valeriovalente96@gmail.com"
-                  target="_blank"
-                >
-                  <i class="far fa-envelope fa-2x"></i>
-                </a>
-              </div>
+            <!-- Right: Image -->
+            <div class="flex-shrink-0">
+              <img src="images/dmlmip.jpg" alt="Deploying Machine Learning in Production Logo"
+                class="rounded-lg shadow-md w-32 h-auto">
             </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">MLOps</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Python</span>
+          </div>
+        </div>
+
+        <!-- Certification 2 -->
+        <div class="cert-badge bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/30 transition">
+          <div class="flex items-start gap-6">
+            <!-- Left: Icon & Text -->
+            <div class="flex-1">
+              <div class="flex items-start mb-4">
+                <div class="text-primary-500 text-2xl mr-4">
+                  <i class="fas fa-certificate"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg mb-1">Machine Learning in Production</h3>
+                  <p class="text-gray-400 text-sm">Deeplearning.ai • May 2024</p>
+                </div>
+              </div>
+              <p class="text-gray-300">
+                <a href="https://www.coursera.org/account/accomplishments/verify/96CN9B7M28XA" target="_blank"
+                  class="text-primary-200 hover:text-primary-500">Credential ID
+                  96CN9B7M28XA</a>
+              </p>
+            </div>
+            <!-- Right: Image -->
+            <div class="flex-shrink-0">
+              <img src="images/mlip.jpg" alt="Machine Learning in Production Logo" class="rounded-lg shadow-md w-32 h-auto">
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">MLOps</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Python</span>
+          </div>
+        </div>
+    
+        <!-- Award 1 -->
+        <div class="cert-badge bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/30 transition">
+          <div class="flex items-start gap-6">
+            <!-- Left: Icon & Text -->
+            <div class="flex-1">
+              <div class="flex items-start mb-4">
+                <div class="text-primary-500 text-2xl mr-4">
+                  <i class="fas fa-certificate"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg mb-1">Huawei Seeds For The Future Finalist</h3>
+                  <p class="text-gray-400 text-sm">Huawei • November 2021</p>
+                </div>
+              </div>
+              <p class="text-gray-300"><a
+                  href="https://magazine.unibo.it/archivio/2021/12/17/team-con-studenti-unibo-vincitore-al-seeds-for-the-future"
+                  target="_blank" class="text-primary-200 hover:text-primary-500">Read the article</a></p>
+            </div>
+            <!-- Right: Image -->
+            <div class="flex-shrink-0">
+              <img src="images/hsftf.jpg" alt="Machine Learning in Production Logo"
+                class="rounded-lg shadow-md w-32 h-auto">
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Cross Functional Team</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Agile</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Proactivity</span>
+          </div>
+        </div>
+    
+        <!-- Certification 3 -->
+        <div class="cert-badge bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/30 transition">
+          <div class="flex items-start gap-6">
+            <!-- Left: Icon & Text -->
+            <div class="flex-1">
+              <div class="flex items-start mb-4">
+                <div class="text-primary-500 text-2xl mr-4">
+                  <i class="fas fa-certificate"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg mb-1">Introduction to Retrieval Augmented Generation (RAG)</h3>
+                  <p class="text-gray-400 text-sm">Duke University • Aug 2024</p>
+                </div>
+              </div>
+              <p class="text-gray-300"><a href="https://www.coursera.org/account/accomplishments/verify/UT2G2PAI109Z" target="_blank"
+                  class="text-primary-200 hover:text-primary-500">Credential ID UT2G2PAI109</a></p>
+            </div>
+            <!-- Right: Image -->
+            <div class="flex-shrink-0">
+              <img src="images/rag.jpg" alt="Introduction to Retrieval Augmented Generation Logo"
+                class="rounded-lg shadow-md w-32 h-auto">
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Python</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">RAG</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">LLM</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Llamaindex</span>
+          </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="mb-28">
+      <h2 class="text-3xl font-bold mb-12 text-center">
+        <span class="text-primary-500">></span> Selected Work
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Project 1 -->
+        <div class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
+          <div class="mb-4 overflow-hidden rounded-lg">
+            <img src="images/llmmamcp.jpg" alt="multi-agent system using model context protocol (MCP)" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-bold mb-2">LLM Multi-Agents</h3>
+          <p class="text-gray-400 mb-4 flex-grow">Developed and contributed to several LLM-based systems, including a multi-agent
+            one featuring a <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank"
+              class="text-primary-300 hover:text-primary-500">Model Context Protocol (MCP) server</a> serving specialized tools.
+            For one of them I contributed to a famous GitHub repo <a a
+              href="https://www.anthropic.com/news/model-context-protocol" target="_blank"
+              class="text-primary-300 hover:text-primary-500">Mcpadapt</a>
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">LLM</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">RAG</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">MCP</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">LlamaIndex</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Agentic AI</span>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
+          <div class="mb-4 overflow-hidden rounded-lg">
+            <img src="images/mlops.jpg" alt="Automated testing framework" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-bold mb-2">MLOps on Azure</h3>
+          <p class="text-gray-400 mb-4 flex-grow">Personlly deployed, tested and monitored several ML models on the Azure platform.</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Python</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Pytest</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">MLOps</span>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
+          <div class="mb-4 overflow-hidden rounded-lg">
+            <img src="images/pocs.jpg" alt="Predictive maintenance dashboard" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-bold mb-2">POCs Creation</h3>
+          <p class="text-gray-400 mb-4 flex-grow">Developed several POCs for clients providing minimum viable product and aligning with non-technical stakeholders.</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Python</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Streamlit</span>
+            <span class="bg-dark-700 text-primary-400 text-xs px-3 py-1 rounded">Docker</span>
           </div>
         </div>
       </div>
-    </div>
-    <!-- FOOTER -->
-    <footer>
-      <div class="container-fluid padding">
-        <div class="row text-center">
-          <div class="col-12">
-            <hr class="light" />
-            <h5>&copy; 2021 Valerio Valente</h5>
-          </div>
-        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="mb-20">
+      <h2 class="text-3xl font-bold mb-12 text-center">
+        <span class="text-primary-500">~</span> Let's Connect
+      </h2>
+      <div class="flex justify-center gap-6 mb-8">
+        <a href="https://github.com/valeriova96" target="_blank"
+          class="text-2xl text-primary-500 hover:text-primary-400 transition-colors">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/valerio-valente/" target="_blank"
+          class="text-2xl text-primary-500 hover:text-primary-400 transition-colors">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://medium.com/@valeriovalente96" target="_blank"
+          class="text-2xl text-primary-500 hover:text-primary-400 transition-colors">
+          <i class="fab fa-medium"></i>
+        </a>
       </div>
-    </footer>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+      <div class="bg-dark-800 rounded-lg shadow-md p-8 max-w-2xl mx-auto gradient-border">
+        <form>
+          <div class="mb-6">
+            <label for="name" class="block text-gray-300 mb-2">Name</label>
+            <input type="text" id="name"
+              class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white">
+          </div>
+          <div class="mb-6">
+            <label for="email" class="block text-gray-300 mb-2">Email</label>
+            <input type="email" id="email"
+              class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white">
+          </div>
+          <div class="mb-6">
+            <label for="message" class="block text-gray-300 mb-2">Message</label>
+            <textarea id="message" rows="5"
+              class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white"></textarea>
+          </div>
