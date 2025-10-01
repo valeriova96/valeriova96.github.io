@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <title>Recommended Reads | Valerio Valente</title>
+  <meta name="description" content="Books that shaped my journey in ML and AI Engineering">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="toggle-text.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12'
+            },
+            dark: {
+              900: '#0a0a0a',
+              800: '#1a1a1a',
+              700: '#2a2a2a',
+              600: '#3a3a3a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
+    }
+
+    .glow-text {
+      text-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+    }
+
+    .gradient-border {
+      border: 2px solid transparent;
+      background: linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+        linear-gradient(to right, #f97316, #c2410c) border-box;
+    }
+
+    .book-row {
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .book-row:hover {
+      border-left-color: #f97316;
+      background: rgba(26, 26, 26, 0.5);
+    }
+
+    .book-row.expanded {
+      background: rgba(26, 26, 26, 0.8);
+      border-left-color: #f97316;
+    }
+
+    ::selection {
+      background: #f97316;
+      color: #0a0a0a;
+    }
+
+    .rank-badge {
+      background: linear-gradient(135deg, #f97316, #c2410c);
+      box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Header -->
+  <header class="py-8 border-b border-dark-700">
+    <div class="container mx-auto px-6 max-w-6xl">
+      <div class="flex items-center justify-between">
+        <a href="index.html" class="text-gray-400 hover:text-primary-500 transition-colors flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i>
+          <span>Back to Home</span>
+        </a>
+        <h1 class="text-3xl md:text-4xl font-bold">
+          <span>Recommended Reads</span>
+        </h1>
+        <div class="w-32"></div> <!-- Spacer for centering -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-6 py-12 max-w-6xl">
+    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+      Books that have shaped my understanding of ML, AI Engineering, and building production-grade systems. Ranked by impact on my professional journey.
+    </p>
+
+    <!-- Books List -->
+    <div class="space-y-6">
+      
+      <!-- Book 1: AI Engineering -->
+      <div class="book-row rounded-lg p-6" id="book1-container">
+        <div class="flex gap-6 items-start">
+          <!-- Rank Badge -->
+          <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+            1
+          </div>
+          
+          <!-- Book Image -->
+          <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
+            <img src="images/ai_engineering.png" alt="AI Engineering" class="w-full h-full object-cover">
+          </div>
+          
+          <!-- Book Info -->
+          <div class="flex-grow min-w-0">
+            <div class="flex items-start justify-between gap-4 mb-2">
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-1">AI Engineering</h3>
+                <p class="text-gray-400 text-sm">Chip Huyen • O'Reilly Media • 2024</p>
+              </div>
+            </div>
+            
+            <!-- Preview Text -->
+            <p class="text-gray-300 text-sm mt-3 inline">
+                A guide to building real-world applications using pre-trained large language and multimodal models.
+                <span id="book1-full" class="hidden">
+                    It distinguishes itself from traditional machine learning by focusing on adapting and integrating existing
+                    models rather than training them from scratch. I particularly appreciated Huyen's perspective on AI Engineering.
+                    Coming from a standard ML background, I found myself lost when I started working in this field. This book
+                    provided me with a solid foundation and practical insights into the challenges and best practices of AI
+                    Engineering, helping me find my place in the fast-paced AI environment.
+                </span>
+            </p>
+            <button id="book1-btn" onclick="toggleText('book1-btn', 'book1-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
+              Read more
+            </button>
+            
+            <!-- Amazon Link (always visible) -->
+            <div class="mt-3">
+              <a href="https://amzn.eu/d/iIdAhq5" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
+                <i class="fab fa-amazon"></i>
+                View on Amazon
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 2: Example Template -->
+      <div class="book-row rounded-lg p-6" id="book2-container">
+        <div class="flex gap-6 items-start">
+          <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+            2
+          </div>
+          
+          <!-- Book Image -->
+          <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
+            <img src="images/ml_statquest_guide.jpg" alt="The StatQuest Illustrated Guide To Machine Learning" class="w-full h-full object-cover">
+          </div>
+          
+          <div class="flex-grow min-w-0">
+            <div class="flex items-start justify-between gap-4 mb-2">
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-1">The StatQuest Illustrated Guide To Machine Learning</h3>
+                <p class="text-gray-400 text-sm">Josh Starmer • StatQuest • 2022</p>
+              </div>
+            </div>
+            
+            <p class="text-gray-300 text-sm mt-3 inline">
+                This book takes the machine learning algorithms, no matter how complicated, and breaks them down into
+                small, bite-sized pieces that are easy to understand.
+                <span id="book2-full" class="hidden">
+                    I believe Josh Starmer has done an incredible job of making complex topics accessible and engaging. It's
+                    the go-to
+                    perfect book for anyone looking to get a solid understanding of machine learning without getting
+                    bogged down in
+                    technical jargon. Of course it cannot replace a deep dive into the mathematics behind the algorithms,
+                    but it is a
+                    great starting point to get the big picture and understand how the algorithms work at a high level.
+                </span>
+            </p>
+            <button id="book2-btn" onclick="toggleText('book2-btn', 'book2-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
+              Read more
+            </button>
+            
+            <div class="mt-3">
+              <a href="https://amzn.eu/d/1BIAuFY" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
+                <i class="fab fa-amazon"></i>
+                View on Amazon
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book 3: Example Template -->
+      <div class="book-row rounded-lg p-6" id="book3-container">
+        <div class="flex gap-6 items-start">
+          <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+            3
+          </div>
+          
+          <!-- Book Image -->
+          <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
+            <img src="images/ai_statquest_guide.jpg" alt="The StatQuest Illustrated Guide to Neural Networks and AI" class="w-full h-full object-cover">
+          </div>
+          
+          <div class="flex-grow min-w-0">
+            <div class="flex items-start justify-between gap-4 mb-2">
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-1">The StatQuest Illustrated Guide to Neural Networks and AI</h3>
+                <p class="text-gray-400 text-sm">Josh Starmer • StatQuest • 2025</p>
+              </div>
+            </div>
+            
+            <p class="text-gray-300 text-sm mt-3 inline">
+                This book explains neural networks from the basic concepts all the way through the state of the art Transformers
+                that power modern AI tools like ChatGPT, and it also includes hands-on tutorials in PyTorch.
+                <span id="book3-full" class="hidden">
+                    I was very optimistic about this book since I loved the previous one by the same author. However, I found this
+                    one to be a bit disappointing. While it does cover a lot of ground, I felt that it lacked the same clarity with
+                    respect to the pytorch examples that tend to be a bit repetitive in the sense that they help you build from
+                    scratch the architectures but don't offer much in terms of deeper insights or variations that you can do to get
+                    more familiar with the concepts.
+                    That said, I still think it's a good resource for getting a high-level understanding of neural networks and how
+                    they work, especially if you're new to the field.
+                    Here the premises are similar to the previous book: it is not a deep dive into the mathematics behind neural
+                    networks, but rather a high-level overview of the concepts and how they work.
+                </span>
+            </p>
+            <button id="book3-btn" onclick="toggleText('book3-btn', 'book3-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
+              Read more
+            </button>
+            
+            <div class="mt-3">
+              <a href="https://amzn.eu/d/dJzCAKQ" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
+                <i class="fab fa-amazon"></i>
+                View on Amazon
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book n: Example Template -->
+      <!-- <div class="book-row rounded-lg p-6" id="bookn-container">
+        <div class="flex gap-6 items-start">
+          <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+            n
+          </div>
+          
+          <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg bg-dark-700 flex items-center justify-center">
+            <i class="fas fa-book text-4xl text-gray-600"></i>
+          </div>
+          
+          <div class="flex-grow min-w-0">
+            <div class="flex items-start justify-between gap-4 mb-2">
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-1">Book Title Here</h3>
+                <p class="text-gray-400 text-sm">Author Name • Publisher • Year</p>
+              </div>
+            </div>
+            
+            <p class="text-gray-300 text-sm mt-3 inline">
+              Brief preview of what this book is about...
+              <span id="book2-full" class="hidden">
+                Full description and your personal thoughts about the book. Why you liked it, what you learned, and how it helped your career or understanding of the field.
+              </span>
+            </p>
+            <button id="book2-btn" onclick="toggleText('book2-btn', 'book2-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
+              Read more
+            </button>
+            
+            <div class="mt-3">
+              <a href="#" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
+                <i class="fab fa-amazon"></i>
+                View on Amazon
+              </a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Add more books following the same pattern -->
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-20 py-8 border-t border-dark-700">
+    <div class="container mx-auto px-6 text-center text-gray-400 text-sm">
+      <p>&copy; 2024 Valerio Valente. Built with curiosity and caffeine.</p>
+    </div>
+  </footer>
+
+
+</body>
+</html>
