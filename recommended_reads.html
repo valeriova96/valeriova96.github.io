@@ -77,10 +77,6 @@
       color: #0a0a0a;
     }
 
-    .rank-badge {
-      background: linear-gradient(135deg, #f97316, #c2410c);
-      box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
-    }
   </style>
 </head>
 <body class="min-h-screen">
@@ -134,264 +130,97 @@
   <main class="container mx-auto px-6 py-12 max-w-6xl">
     <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Recommended Reads</h1>
     <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-      Books that have shaped my understanding of ML, AI Engineering, and building production-grade systems. Ranked by impact on my professional journey.
+      Books that have shaped my understanding of ML, AI Engineering, and building production-grade systems. This collection is in no particular order.
     </p>
 
     <!-- Books List -->
-    <div class="space-y-6">
-      
-      <!-- Book 1: AI Engineering -->
-      <div class="book-row rounded-lg p-4 sm:p-6" id="book1-container">
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
-          <!-- Rank Badge + Book Image -->
-          <div class="flex gap-4 items-center justify-center sm:contents">
-            <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-              1
-            </div>
-            
-            <!-- Book Image -->
-            <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
-              <img src="images/ai_engineering.png" alt="AI Engineering" class="w-full h-full object-cover">
-            </div>
-          </div>
-          
-          <!-- Book Info -->
-          <div class="flex-grow min-w-0">
-            <div class="flex items-start justify-between gap-4 mb-2">
-              <div>
-                <h3 class="text-xl font-semibold text-white mb-1">AI Engineering</h3>
-                <p class="text-gray-400 text-sm">Chip Huyen • O'Reilly Media • 2024</p>
+    <div id="books-list" class="space-y-6"></div>
+
+    <script>
+      const booksList = document.getElementById('books-list');
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function withLineBreaks(value) {
+        return escapeHtml(value).replace(/\n/g, '<br>');
+      }
+
+      function buildBookCard(book, index) {
+        const bookId = `book-${index + 1}`;
+        const detailsId = `${bookId}-full`;
+        const buttonId = `${bookId}-btn`;
+        const imageAlt = book.imageAlt || book.title;
+
+        return `
+          <div class="book-row rounded-lg p-4 sm:p-6" id="${bookId}-container">
+            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
+              <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg bg-dark-700 flex items-center justify-center">
+                <img src="${escapeHtml(book.image)}" alt="${escapeHtml(imageAlt)}" class="w-full h-full object-cover">
+              </div>
+
+              <div class="flex-grow min-w-0">
+                <div class="flex items-start justify-between gap-4 mb-2">
+                  <div>
+                    <h3 class="text-xl font-semibold text-white mb-1">${escapeHtml(book.title)}</h3>
+                    <p class="text-gray-400 text-sm">${escapeHtml(book.author)} • ${escapeHtml(book.publisher)} • ${escapeHtml(book.year)}</p>
+                  </div>
+                </div>
+
+                <p class="text-gray-300 text-sm mt-3 inline">
+                  ${withLineBreaks(book.preview)}
+                  <br>
+                  <span id="${detailsId}" class="hidden">
+                    ${withLineBreaks(book.fullReview)}
+                  </span>
+                </p>
+                <button id="${buttonId}" onclick="toggleText('${buttonId}', '${detailsId}')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
+                  Read more
+                </button>
+
+                <div class="mt-3">
+                  <a href="${escapeHtml(book.amazonUrl)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
+                    <i class="fab fa-amazon"></i>
+                    View on Amazon
+                  </a>
+                </div>
               </div>
             </div>
-            
-            <!-- Preview Text -->
-            <p class="text-gray-300 text-sm mt-3 inline">
-              A guide to building real-world applications using pre-trained large language and multimodal models.
-              <br>
-              <span id="book1-full" class="hidden">
-                It distinguishes itself from traditional machine learning by focusing on adapting and integrating existing
-                models rather than training them from scratch. I particularly appreciated Huyen's perspective on AI Engineering.
-                Coming from a standard ML background, I found myself lost when I started working in this field. This book
-                provided me with a solid foundation and practical insights into the challenges and best practices of AI
-                Engineering, helping me find my place in the fast-paced AI environment.
-              </span>
-            </p>
-            <button id="book1-btn" onclick="toggleText('book1-btn', 'book1-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
-              Read more
-            </button>
-            
-            <!-- Amazon Link (always visible) -->
-            <div class="mt-3">
-              <a href="https://amzn.eu/d/iIdAhq5" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
-                <i class="fab fa-amazon"></i>
-                View on Amazon
-              </a>
-            </div>
           </div>
-        </div>
-      </div>
+        `;
+      }
 
-      <!-- Book 2: Example Template -->
-      <div class="book-row rounded-lg p-4 sm:p-6" id="book2-container">
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
-          <!-- Rank Badge + Book Image -->
-          <div class="flex gap-4 items-center justify-center sm:contents">
-            <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-              2
-            </div>
-            
-            <!-- Book Image -->
-            <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
-              <img src="images/ml_statquest_guide.jpg" alt="The StatQuest Illustrated Guide To Machine Learning" class="w-full h-full object-cover">
-            </div>
-          </div>
-          
-          <div class="flex-grow min-w-0">
-            <div class="flex items-start justify-between gap-4 mb-2">
-              <div>
-                <h3 class="text-xl font-semibold text-white mb-1">The StatQuest Illustrated Guide To Machine Learning</h3>
-                <p class="text-gray-400 text-sm">Josh Starmer • StatQuest • 2022</p>
-              </div>
-            </div>
-            
-            <p class="text-gray-300 text-sm mt-3 inline">
-              This book takes the machine learning algorithms, no matter how complicated, and breaks them down into
-              small, bite-sized pieces that are easy to understand.
-              <br>
-              <span id="book2-full" class="hidden">
-                I believe Josh Starmer has done an incredible job of making complex topics accessible and engaging. It's
-                the go-to
-                perfect book for anyone looking to get a solid understanding of machine learning without getting
-                bogged down in
-                technical jargon. Of course it cannot replace a deep dive into the mathematics behind the algorithms,
-                but it is a
-                great starting point to get the big picture and understand how the algorithms work at a high level.
-              </span>
-            </p>
-            <button id="book2-btn" onclick="toggleText('book2-btn', 'book2-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
-              Read more
-            </button>
-            
-            <div class="mt-3">
-              <a href="https://amzn.eu/d/1BIAuFY" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
-                <i class="fab fa-amazon"></i>
-                View on Amazon
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      async function loadBooks() {
+        try {
+          const response = await fetch('files/books.json', { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error(`Failed to load books: ${response.status}`);
+          }
 
-      <!-- Book 3: Example Template -->
-      <div class="book-row rounded-lg p-4 sm:p-6" id="book3-container">
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
-          <!-- Rank Badge + Book Image -->
-          <div class="flex gap-4 items-center justify-center sm:contents">
-            <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-              3
-            </div>
-            
-            <!-- Book Image -->
-            <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
-              <img src="images/ai_statquest_guide.jpg" alt="The StatQuest Illustrated Guide to Neural Networks and AI" class="w-full h-full object-cover">
-            </div>
-          </div>
-          
-          <div class="flex-grow min-w-0">
-            <div class="flex items-start justify-between gap-4 mb-2">
-              <div>
-                <h3 class="text-xl font-semibold text-white mb-1">The StatQuest Illustrated Guide to Neural Networks and AI</h3>
-                <p class="text-gray-400 text-sm">Josh Starmer • StatQuest • 2025</p>
-              </div>
-            </div>
-            
-            <p class="text-gray-300 text-sm mt-3 inline">
-              This book explains neural networks from the basic concepts all the way through the state of the art Transformers
-              that power modern AI tools like ChatGPT, and it also includes hands-on tutorials in PyTorch.
-              <br>
-              <span id="book3-full" class="hidden">
-                  I was very optimistic about this book since I loved the previous one by the same author. However, I found this
-                  one to be a bit disappointing. While it does cover a lot of ground, I felt that it lacked the same clarity with
-                  respect to the pytorch examples that tend to be a bit repetitive in the sense that they help you build from
-                  scratch the architectures but don't offer much in terms of deeper insights or variations that you can do to get
-                  more familiar with the concepts.
-                  That said, I still think it's a good resource for getting a high-level understanding of neural networks and how
-                  they work, especially if you're new to the field.
-                  Here the premises are similar to the previous book: it is not a deep dive into the mathematics behind neural
-                  networks, but rather a high-level overview of the concepts and how they work.
-              </span>
-            </p>
-            <button id="book3-btn" onclick="toggleText('book3-btn', 'book3-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
-              Read more
-            </button>
-            
-            <div class="mt-3">
-              <a href="https://amzn.eu/d/dJzCAKQ" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
-                <i class="fab fa-amazon"></i>
-                View on Amazon
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+          const books = await response.json();
+          if (!Array.isArray(books)) {
+            throw new Error('Invalid books format: expected an array.');
+          }
 
-      <!-- Book 4: Example Template -->
-      <div class="book-row rounded-lg p-4 sm:p-6" id="book4-container">
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
-          <!-- Rank Badge + Book Image -->
-          <div class="flex gap-4 items-center justify-center sm:contents">
-            <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-              4
+          booksList.innerHTML = books.map((book, index) => buildBookCard(book, index)).join('');
+        } catch (error) {
+          console.error(error);
+          booksList.innerHTML = `
+            <div class="rounded-lg p-6 bg-dark-800 border border-dark-700 text-gray-300">
+              I could not load the books list right now. Please try again later.
             </div>
-      
-            <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg bg-dark-700 flex items-center justify-center">
-              <img src="images/learning_langchain.jpg" alt="Learning Langchain" class="w-full h-full object-cover">
-            </div>
-          </div>
-      
-          <div class="flex-grow min-w-0">
-            <div class="flex items-start justify-between gap-4 mb-2">
-              <div>
-                <h3 class="text-xl font-semibold text-white mb-1">Learning Langchain</h3>
-                <p class="text-gray-400 text-sm">Mayo Oshin & Nuno Campos • O'Reilly Media • 2025</p>
-              </div>
-            </div>
-      
-            <div class="text-gray-300 text-sm mt-3 inline">
-              As someone who uses <b>LangChain</b> as the foundational framework for every LLM app I build, I found this book to be an
-              essential guide for uncovering the ecosystem's more sophisticated, "hidden" features. It strikes a rare balance by
-              blending theoretical concepts with practical code in a way that remains accessible for non-deep study settings. While
-              the chapters on testing and monitoring are unfortunately tethered to a paid <b>LangSmith</b> subscription, the book overall
-              provides a high-value roadmap for moving from simple prompts to production-grade architectures.
-              <br>
-              <span id="book4-full" class="hidden">
-                The book excels at transforming abstract concepts into codable reality, particularly regarding the efficiency of the
-                <i>LangChain Expression Language</i>. I found the integration of the <i>pipe operator</i> and <i>batch invocations</i> particularly impactful
-                for streamlining complex workflows—from preprocessing to parallelized inference—into cohesive, readable chains. This
-                pragmatic approach extends to RAG and agentic logic, where advanced techniques like <i>ColBERT</i>, <i>RAPTOR</i>, and <i>Reciprocal Rank
-                Fusion</i> are presented alongside practical patterns for <i>reflection</i> and <i>modular subgraphs</i>. Rather than just discussing
-                theory, the text demonstrates how to actually implement self-correcting agents and sophisticated retrieval routing,
-                making it a highly effective manual for refining the performance and reliability of autonomous systems.
-              </span>
-            </div>
-            <button id="book4-btn" onclick="toggleText('book4-btn', 'book4-full')"
-              class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
-              Read more
-            </button>
-      
-            <div class="mt-3">
-              <a href="https://amzn.eu/d/092voLq7" target="_blank"
-                class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
-                <i class="fab fa-amazon"></i>
-                View on Amazon
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+          `;
+        }
+      }
 
-      <!-- Book n: Example Template -->
-      <!-- <div class="book-row rounded-lg p-6" id="bookn-container">
-        <div class="flex gap-6 items-start">
-          <div class="rank-badge text-white font-bold text-2xl w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
-            n
-          </div>
-          
-          <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg bg-dark-700 flex items-center justify-center">
-            <i class="fas fa-book text-4xl text-gray-600"></i>
-          </div>
-          
-          <div class="flex-grow min-w-0">
-            <div class="flex items-start justify-between gap-4 mb-2">
-              <div>
-                <h3 class="text-xl font-semibold text-white mb-1">Book Title Here</h3>
-                <p class="text-gray-400 text-sm">Author Name • Publisher • Year</p>
-              </div>
-            </div>
-            
-            <p class="text-gray-300 text-sm mt-3 inline">
-              Brief preview of what this book is about...
-              <span id="book2-full" class="hidden">
-                Full description and your personal thoughts about the book. Why you liked it, what you learned, and how it helped your career or understanding of the field.
-              </span>
-            </p>
-            <button id="book2-btn" onclick="toggleText('book2-btn', 'book2-full')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
-              Read more
-            </button>
-            
-            <div class="mt-3">
-              <a href="#" target="_blank" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
-                <i class="fab fa-amazon"></i>
-                View on Amazon
-              </a>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- Add more books following the same pattern -->
-
-    </div>
+      loadBooks();
+    </script>
   </main>
 
   <!-- Footer -->

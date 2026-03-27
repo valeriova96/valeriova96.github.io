@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books Admin | Valerio Valente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
+    }
+
+    ::selection {
+      background: #f97316;
+      color: #0a0a0a;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <main class="container mx-auto px-6 py-12 max-w-4xl">
+    <h1 class="text-3xl font-bold mb-3 text-white">Books Admin</h1>
+    <p class="text-gray-300 mb-6">
+      Add a new book to files/books.json and publish it via GitHub API. Your token is only used in this browser session and is never stored.
+    </p>
+
+    <div class="rounded-lg border border-zinc-800 bg-zinc-900 p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4">Repository Settings</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <label class="block">
+          <span class="text-sm text-gray-300">GitHub Owner</span>
+          <input id="owner" type="text" value="valeriova96" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+        </label>
+        <label class="block">
+          <span class="text-sm text-gray-300">Repository</span>
+          <input id="repo" type="text" value="valeriova96.github.io" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+        </label>
+        <label class="block">
+          <span class="text-sm text-gray-300">Branch</span>
+          <input id="branch" type="text" value="main" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+        </label>
+        <label class="block">
+          <span class="text-sm text-gray-300">Data File Path</span>
+          <input id="filePath" type="text" value="files/books.json" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+        </label>
+      </div>
+      <label class="block mt-4">
+        <span class="text-sm text-gray-300">GitHub Token (Contents: Write)</span>
+        <input id="token" type="password" autocomplete="off" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white" placeholder="github_pat_...">
+      </label>
+    </div>
+
+    <form id="book-form" class="rounded-lg border border-zinc-800 bg-zinc-900 p-6 space-y-4">
+      <h2 class="text-xl font-semibold mb-2">New Book</h2>
+
+      <label class="block">
+        <span class="text-sm text-gray-300">Title</span>
+        <input id="title" required type="text" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+      </label>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <label class="block">
+          <span class="text-sm text-gray-300">Author</span>
+          <input id="author" required type="text" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+        </label>
+        <label class="block">
+          <span class="text-sm text-gray-300">Publisher</span>
+          <input id="publisher" required type="text" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+        </label>
+        <label class="block">
+          <span class="text-sm text-gray-300">Year</span>
+          <input id="year" required type="text" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white" placeholder="2026">
+        </label>
+      </div>
+
+      <label class="block">
+        <span class="text-sm text-gray-300">Image Path</span>
+        <input id="image" required type="text" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white" placeholder="images/new_book.jpg">
+      </label>
+
+      <label class="block">
+        <span class="text-sm text-gray-300">Image Alt (optional)</span>
+        <input id="imageAlt" type="text" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white">
+      </label>
+
+      <label class="block">
+        <span class="text-sm text-gray-300">Preview</span>
+        <textarea id="preview" required rows="3" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white"></textarea>
+      </label>
+
+      <label class="block">
+        <span class="text-sm text-gray-300">Full Review</span>
+        <textarea id="fullReview" required rows="6" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white"></textarea>
+      </label>
+
+      <label class="block">
+        <span class="text-sm text-gray-300">Amazon URL</span>
+        <input id="amazonUrl" required type="url" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white" placeholder="https://...">
+      </label>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button id="submitBtn" type="submit" class="rounded bg-orange-600 hover:bg-orange-500 px-4 py-2 font-semibold text-white">
+          Add Book And Commit
+        </button>
+        <button id="resetBtn" type="button" class="rounded border border-zinc-700 hover:bg-zinc-800 px-4 py-2 font-semibold text-white">
+          Reset
+        </button>
+      </div>
+    </form>
+
+    <div id="status" class="mt-6 text-sm text-gray-300"></div>
+  </main>
+
+  <script>
+    const form = document.getElementById('book-form');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function setStatus(message, isError = false) {
+      statusEl.textContent = message;
+      statusEl.className = isError ? 'mt-6 text-sm text-red-400' : 'mt-6 text-sm text-green-400';
+    }
+
+    function getValue(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    function encodeBase64Utf8(text) {
+      const bytes = new TextEncoder().encode(text);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i += 1) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
+    function decodeBase64Utf8(base64Text) {
+      const binary = atob(base64Text.replace(/\n/g, ''));
+      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    async function getBooksFile(owner, repo, path, branch, token) {
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`GitHub read failed (${response.status}).`);
+      }
+
+      return response.json();
+    }
+
+    async function updateBooksFile(owner, repo, path, branch, token, sha, books, commitMessage) {
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+      const payload = {
+        message: commitMessage,
+        branch,
+        sha,
+        content: encodeBase64Utf8(`${JSON.stringify(books, null, 2)}\n`)
+      };
+
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(`GitHub write failed (${response.status}): ${body}`);
+      }
+
+      return response.json();
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      setStatus('Publishing new book...');
+      submitBtn.disabled = true;
+
+      try {
+        const owner = getValue('owner');
+        const repo = getValue('repo');
+        const branch = getValue('branch');
+        const filePath = getValue('filePath');
+        const token = getValue('token');
+
+        if (!owner || !repo || !branch || !filePath || !token) {
+          throw new Error('Repository settings and token are required.');
+        }
+
+        const newBook = {
+          title: getValue('title'),
+          author: getValue('author'),
+          publisher: getValue('publisher'),
+          year: getValue('year'),
+          image: getValue('image'),
+          imageAlt: getValue('imageAlt') || getValue('title'),
+          preview: getValue('preview'),
+          fullReview: getValue('fullReview'),
+          amazonUrl: getValue('amazonUrl')
+        };
+
+        const fileResponse = await getBooksFile(owner, repo, filePath, branch, token);
+        const rawContent = decodeBase64Utf8(fileResponse.content || 'W10=');
+        const books = JSON.parse(rawContent);
+
+        if (!Array.isArray(books)) {
+          throw new Error('books.json is not an array.');
+        }
+
+        books.push(newBook);
+
+        const commitMessage = `Add book: ${newBook.title}`;
+        await updateBooksFile(owner, repo, filePath, branch, token, fileResponse.sha, books, commitMessage);
+
+        setStatus(`Success. "${newBook.title}" was committed to ${owner}/${repo} on branch ${branch}.`);
+        form.reset();
+      } catch (error) {
+        setStatus(error.message, true);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      form.reset();
+      setStatus('Form cleared.');
+    });
+  </script>
+</body>
+</html>

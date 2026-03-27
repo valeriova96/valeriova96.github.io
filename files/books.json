@@ -1,0 +1,46 @@
+[
+  {
+    "title": "AI Engineering",
+    "author": "Chip Huyen",
+    "publisher": "O'Reilly Media",
+    "year": "2024",
+    "image": "images/ai_engineering.png",
+    "imageAlt": "AI Engineering",
+    "preview": "A guide to building real-world applications using pre-trained large language and multimodal models.",
+    "fullReview": "It distinguishes itself from traditional machine learning by focusing on adapting and integrating existing models rather than training them from scratch. I particularly appreciated Huyen's perspective on AI Engineering. Coming from a standard ML background, I found myself lost when I started working in this field. This book provided me with a solid foundation and practical insights into the challenges and best practices of AI Engineering, helping me find my place in the fast-paced AI environment.",
+    "amazonUrl": "https://amzn.eu/d/iIdAhq5"
+  },
+  {
+    "title": "The StatQuest Illustrated Guide To Machine Learning",
+    "author": "Josh Starmer",
+    "publisher": "StatQuest",
+    "year": "2022",
+    "image": "images/ml_statquest_guide.jpg",
+    "imageAlt": "The StatQuest Illustrated Guide To Machine Learning",
+    "preview": "This book takes the machine learning algorithms, no matter how complicated, and breaks them down into small, bite-sized pieces that are easy to understand.",
+    "fullReview": "I believe Josh Starmer has done an incredible job of making complex topics accessible and engaging. It's the go-to perfect book for anyone looking to get a solid understanding of machine learning without getting bogged down in technical jargon. Of course it cannot replace a deep dive into the mathematics behind the algorithms, but it is a great starting point to get the big picture and understand how the algorithms work at a high level.",
+    "amazonUrl": "https://amzn.eu/d/1BIAuFY"
+  },
+  {
+    "title": "The StatQuest Illustrated Guide to Neural Networks and AI",
+    "author": "Josh Starmer",
+    "publisher": "StatQuest",
+    "year": "2025",
+    "image": "images/ai_statquest_guide.jpg",
+    "imageAlt": "The StatQuest Illustrated Guide to Neural Networks and AI",
+    "preview": "This book explains neural networks from the basic concepts all the way through the state of the art Transformers that power modern AI tools like ChatGPT, and it also includes hands-on tutorials in PyTorch.",
+    "fullReview": "I was very optimistic about this book since I loved the previous one by the same author. However, I found this one to be a bit disappointing. While it does cover a lot of ground, I felt that it lacked the same clarity with respect to the PyTorch examples that tend to be a bit repetitive in the sense that they help you build from scratch the architectures but do not offer much in terms of deeper insights or variations that you can do to get more familiar with the concepts. That said, I still think it's a good resource for getting a high-level understanding of neural networks and how they work, especially if you're new to the field. Here the premises are similar to the previous book: it is not a deep dive into the mathematics behind neural networks, but rather a high-level overview of the concepts and how they work.",
+    "amazonUrl": "https://amzn.eu/d/dJzCAKQ"
+  },
+  {
+    "title": "Learning Langchain",
+    "author": "Mayo Oshin & Nuno Campos",
+    "publisher": "O'Reilly Media",
+    "year": "2025",
+    "image": "images/learning_langchain.jpg",
+    "imageAlt": "Learning Langchain",
+    "preview": "As someone who uses LangChain as the foundational framework for every LLM app I build, I found this book to be an essential guide for uncovering the ecosystem's more sophisticated, hidden features. It strikes a rare balance by blending theoretical concepts with practical code in a way that remains accessible for non-deep study settings. While the chapters on testing and monitoring are unfortunately tethered to a paid LangSmith subscription, the book overall provides a high-value roadmap for moving from simple prompts to production-grade architectures.",
+    "fullReview": "The book excels at transforming abstract concepts into codable reality, particularly regarding the efficiency of the LangChain Expression Language. I found the integration of the pipe operator and batch invocations particularly impactful for streamlining complex workflows, from preprocessing to parallelized inference, into cohesive, readable chains. This pragmatic approach extends to RAG and agentic logic, where advanced techniques like ColBERT, RAPTOR, and Reciprocal Rank Fusion are presented alongside practical patterns for reflection and modular subgraphs. Rather than just discussing theory, the text demonstrates how to actually implement self-correcting agents and sophisticated retrieval routing, making it a highly effective manual for refining the performance and reliability of autonomous systems.",
+    "amazonUrl": "https://amzn.eu/d/092voLq7"
+  }
+]
