@@ -53,8 +53,20 @@
       </label>
     </div>
 
+    <div class="rounded-lg border border-zinc-800 bg-zinc-900 p-6 mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Books List</h2>
+        <button id="loadBooksBtn" type="button" class="rounded bg-zinc-800 hover:bg-zinc-700 px-3 py-1 text-sm font-semibold text-white">
+          Load Books
+        </button>
+      </div>
+      <div id="books-list" class="space-y-3 max-h-96 overflow-y-auto">
+        <p class="text-gray-400 text-sm">Click "Load Books" to fetch and display all books</p>
+      </div>
+    </div>
+
     <form id="book-form" class="rounded-lg border border-zinc-800 bg-zinc-900 p-6 space-y-4">
-      <h2 class="text-xl font-semibold mb-2">New Book</h2>
+      <h2 id="form-title" class="text-xl font-semibold mb-2">New Book</h2>
 
       <label class="block">
         <span class="text-sm text-gray-300">Title</span>
@@ -105,6 +117,9 @@
         <button id="submitBtn" type="submit" class="rounded bg-orange-600 hover:bg-orange-500 px-4 py-2 font-semibold text-white">
           Add Book And Commit
         </button>
+        <button id="cancelBtn" type="button" class="rounded border border-zinc-700 hover:bg-zinc-800 px-4 py-2 font-semibold text-white hidden">
+          Cancel Edit
+        </button>
         <button id="resetBtn" type="button" class="rounded border border-zinc-700 hover:bg-zinc-800 px-4 py-2 font-semibold text-white">
           Reset
         </button>
@@ -118,6 +133,16 @@
     const form = document.getElementById('book-form');
     const statusEl = document.getElementById('status');
     const submitBtn = document.getElementById('submitBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const loadBooksBtn = document.getElementById('loadBooksBtn');
+    const booksList = document.getElementById('books-list');
+    const formTitle = document.getElementById('form-title');
+
+    // State management
+    let currentBooks = [];
+    let currentFileData = null;
+    let editingIndex = null;
 
     function setStatus(message, isError = false) {
       statusEl.textContent = message;
@@ -145,7 +170,6 @@
 
     async function getBooksFile(owner, repo, path, branch, token) {
       const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`;
-      console.log('GitHub API URL:', url);
       const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -153,10 +177,8 @@
         }
       });
 
-      console.log('GitHub response status:', response.status);
       if (!response.ok) {
         const errorBody = await response.text();
-        console.log('GitHub error response:', errorBody);
         throw new Error(`GitHub read failed (${response.status}). Check browser console for details.`);
       }
 
@@ -190,9 +212,136 @@
       return response.json();
     }
 
+    function renderBooksList() {
+      booksList.innerHTML = currentBooks.map((book, index) => `
+        <div class="rounded border border-zinc-700 bg-zinc-800 p-3 flex justify-between items-start gap-3">
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-white truncate">${book.title}</p>
+            <p class="text-sm text-gray-400">${book.author} (${book.year})</p>
+          </div>
+          <div class="flex gap-2 flex-shrink-0">
+            <button type="button" class="rounded bg-blue-600 hover:bg-blue-500 px-2 py-1 text-xs font-semibold text-white edit-btn" data-index="${index}">
+              Edit
+            </button>
+            <button type="button" class="rounded bg-red-600 hover:bg-red-500 px-2 py-1 text-xs font-semibold text-white delete-btn" data-index="${index}">
+              Delete
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Attach event listeners to buttons
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', handleEditBook);
+      });
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', handleDeleteBook);
+      });
+    }
+
+    async function loadBooks() {
+      setStatus('Loading books...');
+      loadBooksBtn.disabled = true;
+
+      try {
+        const owner = getValue('owner');
+        const repo = getValue('repo');
+        const branch = getValue('branch');
+        const filePath = getValue('filePath');
+        const token = getValue('token');
+
+        if (!owner || !repo || !branch || !filePath || !token) {
+          throw new Error('Repository settings and token are required.');
+        }
+
+        currentFileData = await getBooksFile(owner, repo, filePath, branch, token);
+        const rawContent = decodeBase64Utf8(currentFileData.content || 'W10=');
+        currentBooks = JSON.parse(rawContent);
+
+        if (!Array.isArray(currentBooks)) {
+          throw new Error('books.json is not an array.');
+        }
+
+        renderBooksList();
+        setStatus(`Loaded ${currentBooks.length} book(s).`);
+      } catch (error) {
+        setStatus(error.message, true);
+        currentBooks = [];
+        renderBooksList();
+      } finally {
+        loadBooksBtn.disabled = false;
+      }
+    }
+
+    function handleEditBook(event) {
+      const index = parseInt(event.target.dataset.index);
+      const book = currentBooks[index];
+
+      editingIndex = index;
+      document.getElementById('title').value = book.title;
+      document.getElementById('author').value = book.author;
+      document.getElementById('publisher').value = book.publisher;
+      document.getElementById('year').value = book.year;
+      document.getElementById('image').value = book.image;
+      document.getElementById('imageAlt').value = book.imageAlt || '';
+      document.getElementById('preview').value = book.preview;
+      document.getElementById('fullReview').value = book.fullReview;
+      document.getElementById('amazonUrl').value = book.amazonUrl;
+
+      formTitle.textContent = `Edit Book: ${book.title}`;
+      submitBtn.textContent = 'Update Book And Commit';
+      submitBtn.classList.remove('bg-orange-600', 'hover:bg-orange-500');
+      submitBtn.classList.add('bg-blue-600', 'hover:bg-blue-500');
+      cancelBtn.classList.remove('hidden');
+      resetBtn.classList.add('hidden');
+
+      form.scrollIntoView({ behavior: 'smooth' });
+      setStatus('');
+    }
+
+    function handleDeleteBook(event) {
+      const index = parseInt(event.target.dataset.index);
+      const book = currentBooks[index];
+
+      if (confirm(`Are you sure you want to delete "${book.title}"?`)) {
+        deleteBook(index);
+      }
+    }
+
+    async function deleteBook(index) {
+      setStatus('Deleting book...');
+      submitBtn.disabled = true;
+
+      try {
+        const owner = getValue('owner');
+        const repo = getValue('repo');
+        const branch = getValue('branch');
+        const filePath = getValue('filePath');
+        const token = getValue('token');
+
+        const bookTitle = currentBooks[index].title;
+        currentBooks.splice(index, 1);
+
+        const commitMessage = `Delete book: ${bookTitle}`;
+        await updateBooksFile(owner, repo, filePath, branch, token, currentFileData.sha, currentBooks, commitMessage);
+
+        setStatus(`Success. "${bookTitle}" was deleted from ${owner}/${repo}.`);
+        renderBooksList();
+      } catch (error) {
+        setStatus(error.message, true);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      setStatus('Publishing new book...');
+      
+      if (editingIndex !== null) {
+        setStatus('Updating book...');
+      } else {
+        setStatus('Publishing new book...');
+      }
       submitBtn.disabled = true;
 
       try {
@@ -206,7 +355,7 @@
           throw new Error('Repository settings and token are required.');
         }
 
-        const newBook = {
+        const bookData = {
           title: getValue('title'),
           author: getValue('author'),
           publisher: getValue('publisher'),
@@ -218,21 +367,28 @@
           amazonUrl: getValue('amazonUrl')
         };
 
-        const fileResponse = await getBooksFile(owner, repo, filePath, branch, token);
-        const rawContent = decodeBase64Utf8(fileResponse.content || 'W10=');
-        const books = JSON.parse(rawContent);
-
-        if (!Array.isArray(books)) {
-          throw new Error('books.json is not an array.');
+        let commitMessage;
+        if (editingIndex !== null) {
+          // Update existing book
+          currentBooks[editingIndex] = bookData;
+          commitMessage = `Update book: ${bookData.title}`;
+        } else {
+          // Add new book
+          currentBooks.push(bookData);
+          commitMessage = `Add book: ${bookData.title}`;
         }
 
-        books.push(newBook);
+        await updateBooksFile(owner, repo, filePath, branch, token, currentFileData.sha, currentBooks, commitMessage);
 
-        const commitMessage = `Add book: ${newBook.title}`;
-        await updateBooksFile(owner, repo, filePath, branch, token, fileResponse.sha, books, commitMessage);
+        if (editingIndex !== null) {
+          setStatus(`Success. "${bookData.title}" was updated in ${owner}/${repo}.`);
+        } else {
+          setStatus(`Success. "${bookData.title}" was committed to ${owner}/${repo}.`);
+        }
 
-        setStatus(`Success. "${newBook.title}" was committed to ${owner}/${repo} on branch ${branch}.`);
         form.reset();
+        resetEditMode();
+        renderBooksList();
       } catch (error) {
         setStatus(error.message, true);
       } finally {
@@ -240,10 +396,28 @@
       }
     });
 
-    document.getElementById('resetBtn').addEventListener('click', () => {
+    function resetEditMode() {
+      editingIndex = null;
+      formTitle.textContent = 'New Book';
+      submitBtn.textContent = 'Add Book And Commit';
+      submitBtn.classList.remove('bg-blue-600', 'hover:bg-blue-500');
+      submitBtn.classList.add('bg-orange-600', 'hover:bg-orange-500');
+      cancelBtn.classList.add('hidden');
+      resetBtn.classList.remove('hidden');
+    }
+
+    cancelBtn.addEventListener('click', () => {
+      form.reset();
+      resetEditMode();
+      setStatus('Edit cancelled.');
+    });
+
+    resetBtn.addEventListener('click', () => {
       form.reset();
       setStatus('Form cleared.');
     });
+
+    loadBooksBtn.addEventListener('click', loadBooks);
   </script>
 </body>
 </html>
