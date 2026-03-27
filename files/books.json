@@ -42,5 +42,16 @@
     "preview": "As someone who uses LangChain as the foundational framework for every LLM app I build, I found this book to be an essential guide for uncovering the ecosystem's more sophisticated, hidden features. It strikes a rare balance by blending theoretical concepts with practical code in a way that remains accessible for non-deep study settings. While the chapters on testing and monitoring are unfortunately tethered to a paid LangSmith subscription, the book overall provides a high-value roadmap for moving from simple prompts to production-grade architectures.",
     "fullReview": "The book excels at transforming abstract concepts into codable reality, particularly regarding the efficiency of the LangChain Expression Language. I found the integration of the pipe operator and batch invocations particularly impactful for streamlining complex workflows, from preprocessing to parallelized inference, into cohesive, readable chains. This pragmatic approach extends to RAG and agentic logic, where advanced techniques like ColBERT, RAPTOR, and Reciprocal Rank Fusion are presented alongside practical patterns for reflection and modular subgraphs. Rather than just discussing theory, the text demonstrates how to actually implement self-correcting agents and sophisticated retrieval routing, making it a highly effective manual for refining the performance and reliability of autonomous systems.",
     "amazonUrl": "https://amzn.eu/d/092voLq7"
+  },
+  {
+    "title": "test",
+    "author": "banana",
+    "publisher": "banana",
+    "year": "1996",
+    "image": "images/ai_engineering.png",
+    "imageAlt": "test",
+    "preview": "a simple preview",
+    "fullReview": "rgweggwegwegfwegw",
+    "amazonUrl": "https://amzn.eu/d/0afI3rNK"
   }
 ]
