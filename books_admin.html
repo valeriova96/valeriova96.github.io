@@ -88,8 +88,21 @@
         </label>
       </div>
 
+      <div class="block">
+        <span class="text-sm text-gray-300">Cover Image</span>
+        <label class="mt-1 flex items-center justify-center w-full h-32 rounded border-2 border-dashed border-zinc-700 hover:border-orange-500 cursor-pointer transition-colors bg-zinc-950 overflow-hidden relative">
+          <input id="imageFile" type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+          <div id="imagePreviewWrapper" class="flex flex-col items-center gap-1 text-gray-400 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span class="text-xs">Click to select an image</span>
+          </div>
+          <img id="imagePreview" src="" alt="" class="hidden absolute inset-0 w-full h-full object-contain">
+        </label>
+        <p id="imageFileName" class="text-xs text-gray-500 mt-1"></p>
+      </div>
+
       <label class="block">
-        <span class="text-sm text-gray-300">Image Path</span>
+        <span class="text-sm text-gray-300">Image Path <span class="text-gray-500">(auto-filled from upload, or type manually)</span></span>
         <input id="image" required type="text" class="mt-1 w-full rounded bg-zinc-950 border border-zinc-700 p-2 text-white" placeholder="images/new_book.jpg">
       </label>
 
@@ -166,6 +179,70 @@
       const binary = atob(base64Text.replace(/\n/g, ''));
       const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
       return new TextDecoder().decode(bytes);
+    }
+
+    // Image upload handling
+    const imageFileInput = document.getElementById('imageFile');
+    const imagePreview = document.getElementById('imagePreview');
+    const imagePreviewWrapper = document.getElementById('imagePreviewWrapper');
+    const imageFileNameEl = document.getElementById('imageFileName');
+    let pendingImageBase64 = null;
+    let pendingImageFileName = null;
+
+    imageFileInput.addEventListener('change', () => {
+      const file = imageFileInput.files[0];
+      if (!file) return;
+
+      pendingImageFileName = file.name;
+      document.getElementById('image').value = `images/${file.name}`;
+      imageFileNameEl.textContent = file.name;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        pendingImageBase64 = e.target.result.split(',')[1];
+        imagePreview.src = e.target.result;
+        imagePreview.classList.remove('hidden');
+        imagePreviewWrapper.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    async function getFileSha(owner, repo, path, branch, token) {
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${encodeURIComponent(branch)}`;
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' }
+      });
+      if (response.status === 404) return null;
+      if (!response.ok) throw new Error(`GitHub check failed (${response.status}).`);
+      const data = await response.json();
+      return data.sha;
+    }
+
+    async function uploadImageToGitHub(owner, repo, branch, token, fileName, base64Content) {
+      const path = `images/${fileName}`;
+      const existingSha = await getFileSha(owner, repo, path, branch, token);
+      const payload = {
+        message: `Upload cover image: ${fileName}`,
+        branch,
+        content: base64Content,
+        ...(existingSha ? { sha: existingSha } : {})
+      };
+
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(`Image upload failed (${response.status}): ${body}`);
+      }
     }
 
     async function getBooksFile(owner, repo, path, branch, token) {
@@ -355,6 +432,11 @@
           throw new Error('Repository settings and token are required.');
         }
 
+        if (pendingImageBase64 && pendingImageFileName) {
+          setStatus('Uploading cover image...');
+          await uploadImageToGitHub(owner, repo, branch, token, pendingImageFileName, pendingImageBase64);
+        }
+
         const bookData = {
           title: getValue('title'),
           author: getValue('author'),
@@ -387,6 +469,12 @@
         }
 
         form.reset();
+        pendingImageBase64 = null;
+        pendingImageFileName = null;
+        imagePreview.src = '';
+        imagePreview.classList.add('hidden');
+        imagePreviewWrapper.classList.remove('hidden');
+        imageFileNameEl.textContent = '';
         resetEditMode();
         renderBooksList();
       } catch (error) {
