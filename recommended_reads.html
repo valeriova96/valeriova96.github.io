@@ -8,6 +8,7 @@
   <meta name="description" content="Books that shaped my journey in ML and AI Engineering">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"></script>
   <script src="toggle-text.js"></script>
   <script>
     tailwind.config = {
@@ -75,6 +76,22 @@
     ::selection {
       background: #f97316;
       color: #0a0a0a;
+    }
+
+    .rich-review ul {
+      list-style-type: disc;
+      margin-left: 1.25rem;
+      padding-left: 0.25rem;
+    }
+
+    .rich-review ol {
+      list-style-type: decimal;
+      margin-left: 1.25rem;
+      padding-left: 0.25rem;
+    }
+
+    .rich-review li {
+      margin-top: 0.25rem;
     }
 
   </style>
@@ -152,11 +169,42 @@
         return escapeHtml(value).replace(/\n/g, '<br>');
       }
 
+      function withRichText(value) {
+        const textWithBreaks = String(value ?? '').replace(/\n/g, '<br>');
+        return DOMPurify.sanitize(textWithBreaks, {
+          ALLOWED_TAGS: ['b', 'strong', 'i', 'em', 'u', 'p', 'br', 'ul', 'ol', 'li', 'blockquote', 'code', 'a'],
+          ALLOWED_ATTR: ['href', 'target', 'rel'],
+          ALLOW_DATA_ATTR: false,
+          FORBID_TAGS: ['style', 'script']
+        });
+      }
+
+      function getBookLink(book) {
+        if (book.amazonUrl) {
+          return {
+            url: book.amazonUrl,
+            iconClass: 'fab fa-amazon',
+            label: 'View on Amazon'
+          };
+        }
+
+        if (book.externalUrl) {
+          return {
+            url: book.externalUrl,
+            iconClass: 'fas fa-link',
+            label: book.externalLabel || 'View resource'
+          };
+        }
+
+        return null;
+      }
+
       function buildBookCard(book, index) {
         const bookId = `book-${index + 1}`;
         const detailsId = `${bookId}-full`;
         const buttonId = `${bookId}-btn`;
         const imageAlt = book.imageAlt || book.title;
+        const bookLink = getBookLink(book);
 
         return `
           <div class="book-row rounded-lg p-4 sm:p-6" id="${bookId}-container">
@@ -173,23 +221,24 @@
                   </div>
                 </div>
 
-                <p class="text-gray-300 text-sm mt-3 inline">
-                  ${withLineBreaks(book.preview)}
-                  <br>
-                  <span id="${detailsId}" class="hidden">
-                    ${withLineBreaks(book.fullReview)}
-                  </span>
-                </p>
+                <div class="text-gray-300 text-sm mt-3 rich-review">
+                  <div>${withRichText(book.preview)}</div>
+                  <div id="${detailsId}" class="hidden mt-2">
+                    ${withRichText(book.fullReview)}
+                  </div>
+                </div>
                 <button id="${buttonId}" onclick="toggleText('${buttonId}', '${detailsId}')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
                   Read more
                 </button>
 
+                ${bookLink ? `
                 <div class="mt-3">
-                  <a href="${escapeHtml(book.amazonUrl)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
-                    <i class="fab fa-amazon"></i>
-                    View on Amazon
+                  <a href="${escapeHtml(bookLink.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
+                    <i class="${escapeHtml(bookLink.iconClass)}"></i>
+                    ${escapeHtml(bookLink.label)}
                   </a>
                 </div>
+                ` : ''}
               </div>
             </div>
           </div>
