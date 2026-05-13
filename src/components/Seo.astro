@@ -1,0 +1,55 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: 'website' | 'profile';
+  person?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-image.png',
+  ogType = 'website',
+  person = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageAbsolute = new URL(ogImage, Astro.site).href;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Valerio Valente',
+  jobTitle: 'Data Scientist | AI Engineer',
+  url: 'https://valeriova96.github.io',
+  image: 'https://valeriova96.github.io/og-image.png',
+  sameAs: [
+    'https://github.com/valeriova96',
+    'https://www.linkedin.com/in/valerio-valente/',
+    'https://medium.com/@valeriovalente96',
+  ],
+};
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageAbsolute} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="Valerio Valente" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageAbsolute} />
+
+{person && (
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+)}
