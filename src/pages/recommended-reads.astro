@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Recommended Reads | Valerio Valente"
+  description="Books that shaped my journey in ML and AI Engineering"
+  activeLink="books"
+>
+  <script
+    is:inline
+    src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"
+  ></script>
+
+  <main class="container mx-auto px-6 py-12 max-w-6xl">
+    <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Recommended Reads</h1>
+    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+      Books that have shaped my understanding of ML, AI Engineering, and building production-grade systems. This collection is in no particular order.
+    </p>
+
+    <div id="books-list" class="space-y-6"></div>
+  </main>
+
+  <script is:inline>
+    function toggleText(btnId, textId) {
+      const fullText = document.getElementById(textId);
+      const btn = document.getElementById(btnId);
+      if (fullText.classList.contains('hidden')) {
+        fullText.classList.remove('hidden');
+        btn.textContent = 'Read less';
+      } else {
+        fullText.classList.add('hidden');
+        btn.textContent = 'Read more';
+      }
+    }
+
+    const booksList = document.getElementById('books-list');
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function withRichText(value) {
+      const textWithBreaks = String(value ?? '').replace(/\n/g, '<br>');
+      return DOMPurify.sanitize(textWithBreaks, {
+        ALLOWED_TAGS: ['b', 'strong', 'i', 'em', 'u', 'p', 'br', 'ul', 'ol', 'li', 'blockquote', 'code', 'a'],
+        ALLOWED_ATTR: ['href', 'target', 'rel'],
+        ALLOW_DATA_ATTR: false,
+        FORBID_TAGS: ['style', 'script']
+      });
+    }
+
+    function getBookLink(book) {
+      if (book.amazonUrl) {
+        return { url: book.amazonUrl, iconClass: 'fab fa-amazon', label: 'View on Amazon' };
+      }
+      if (book.externalUrl) {
+        return {
+          url: book.externalUrl,
+          iconClass: 'fas fa-link',
+          label: book.externalLabel || 'View resource',
+        };
+      }
+      return null;
+    }
+
+    function buildBookCard(book, index) {
+      const bookId = `book-${index + 1}`;
+      const detailsId = `${bookId}-full`;
+      const buttonId = `${bookId}-btn`;
+      const imageAlt = book.imageAlt || book.title;
+      const bookLink = getBookLink(book);
+
+      return `
+        <div class="book-row rounded-lg p-4 sm:p-6" id="${bookId}-container">
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
+            <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg bg-dark-700 flex items-center justify-center">
+              <img src="${escapeHtml(book.image)}" alt="${escapeHtml(imageAlt)}" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-grow min-w-0">
+              <div class="flex items-start justify-between gap-4 mb-2">
+                <div>
+                  <h3 class="text-xl font-semibold text-white mb-1">${escapeHtml(book.title)}</h3>
+                  <p class="text-gray-400 text-sm">${escapeHtml(book.author)} • ${escapeHtml(book.publisher)} • ${escapeHtml(book.year)}</p>
+                </div>
+              </div>
+              <div class="text-gray-300 text-sm mt-3 rich-review">
+                <div>${withRichText(book.preview)}</div>
+                ${book.fullReview ? `
+                <div id="${detailsId}" class="hidden mt-2">
+                  ${withRichText(book.fullReview)}
+                </div>` : ''}
+              </div>
+              ${book.fullReview ? `
+              <button id="${buttonId}" onclick="toggleText('${buttonId}', '${detailsId}')" class="text-primary-500 hover:text-primary-400 ml-1 underline focus:outline-none text-sm">
+                Read more
+              </button>` : ''}
+              ${bookLink ? `
+              <div class="mt-3">
+                <a href="${escapeHtml(bookLink.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium">
+                  <i class="${escapeHtml(bookLink.iconClass)}"></i>
+                  ${escapeHtml(bookLink.label)}
+                </a>
+              </div>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function loadBooks() {
+      try {
+        const response = await fetch('/files/books.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`Failed to load books: ${response.status}`);
+        }
+        const books = await response.json();
+        if (!Array.isArray(books)) {
+          throw new Error('Invalid books format: expected an array.');
+        }
+        booksList.innerHTML = books.map((book, index) => buildBookCard(book, index)).join('');
+      } catch (error) {
+        console.error(error);
+        booksList.innerHTML = `
+          <div class="rounded-lg p-6 bg-dark-800 border border-dark-700 text-gray-300">
+            I could not load the books list right now. Please try again later.
+          </div>
+        `;
+      }
+    }
+
+    loadBooks();
+  </script>
+</Base>
