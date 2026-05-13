@@ -17,3 +17,6 @@ dist/
 # Editor
 .vscode/
 .idea/
+
+# Local-only visual diff screenshots
+.visual-diff-screenshots/
