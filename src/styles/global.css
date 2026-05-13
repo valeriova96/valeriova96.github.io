@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;
+  --color-primary-600: #ea580c;
+  --color-primary-700: #c2410c;
+  --color-primary-800: #9a3412;
+  --color-primary-900: #7c2d12;
+
+  --color-dark-600: #3a3a3a;
+  --color-dark-700: #2a2a2a;
+  --color-dark-800: #1a1a1a;
+  --color-dark-900: #0a0a0a;
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: #0a0a0a;
+  color: #e5e5e5;
+}
+
+.glow-text {
+  text-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
+}
+
+.gradient-border {
+  border: 2px solid transparent;
+  background: linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+    linear-gradient(to right, #f97316, #c2410c) border-box;
+}
+
+.terminal-style {
+  background: rgba(26, 26, 26, 0.8);
+  border-left: 3px solid #f97316;
+}
+
+::selection {
+  background: #f97316;
+  color: #0a0a0a;
+}
+
+.cert-badge {
+  position: relative;
+  overflow: hidden;
+}
+
+.cert-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, #f97316, #c2410c);
+}
+
+.project-card {
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-row {
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.book-row:hover {
+  border-left-color: #f97316;
+  background: rgba(26, 26, 26, 0.5);
+}
+
+.book-row.expanded {
+  background: rgba(26, 26, 26, 0.8);
+  border-left-color: #f97316;
+}
+
+.rich-review ul {
+  list-style-type: disc;
+  margin-left: 1.25rem;
+  padding-left: 0.25rem;
+}
+
+.rich-review ol {
+  list-style-type: decimal;
+  margin-left: 1.25rem;
+  padding-left: 0.25rem;
+}
+
+.rich-review li {
+  margin-top: 0.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-slow,
+  .animate-float {
+    animation: none !important;
+  }
+}
