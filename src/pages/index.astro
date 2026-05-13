@@ -1,177 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="images/logo.png" />
-  <title>Valerio Valente | MLOps Engineer</title>
-  <meta name="description" content="MLOps specialist building production-grade machine learning systems">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="toggle-text.js"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            primary: {
-              50: '#fff7ed',
-              100: '#ffedd5',
-              200: '#fed7aa',
-              300: '#fdba74',
-              400: '#fb923c',
-              500: '#f97316',
-              600: '#ea580c',
-              700: '#c2410c',
-              800: '#9a3412',
-              900: '#7c2d12'
-            },
-            dark: {
-              900: '#0a0a0a',
-              800: '#1a1a1a',
-              700: '#2a2a2a',
-              600: '#3a3a3a'
-            }
-          },
-          animation: {
-            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'float': 'float 6s ease-in-out infinite'
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' }
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
-    body {
-      font-family: 'Space Grotesk', sans-serif;
-      background-color: #0a0a0a;
-      color: #e5e5e5;
-    }
-
-    .glow-text {
-      text-shadow: 0 0 8px rgba(249, 115, 22, 0.6);
-    }
-
-    .gradient-border {
-      border: 2px solid transparent;
-      background: linear-gradient(#0a0a0a, #0a0a0a) padding-box,
-        linear-gradient(to right, #f97316, #c2410c) border-box;
-    }
-
-    .terminal-style {
-      background: rgba(26, 26, 26, 0.8);
-      border-left: 3px solid #f97316;
-    }
-
-    ::selection {
-      background: #f97316;
-      color: #0a0a0a;
-    }
-
-    .cert-badge {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cert-badge::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: 100%;
-      background: linear-gradient(to bottom, #f97316, #c2410c);
-    }
-
-    .project-card {
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-5px);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .animate-pulse-slow,
-      .animate-float {
-        animation: none !important;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <!-- Animated background elements -->
-  <div class="fixed inset-0 overflow-hidden -z-10">
-    <div class="absolute top-20 left-1/4 w-2 h-2 rounded-full bg-primary-500 opacity-20 animate-pulse-slow"></div>
-    <div class="absolute top-1/3 right-1/3 w-3 h-3 rounded-full bg-primary-400 opacity-30 animate-float"></div>
-    <div class="absolute bottom-1/4 left-1/5 w-1 h-1 rounded-full bg-primary-600 opacity-40 animate-pulse-slow"></div>
-  </div>
-
-  <header class="bg-dark-800 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-dark-700">
-    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" aria-label="Back to top" class="flex items-center text-2xl font-bold text-primary-500">
-        V
-        <div class="text-2xl font-bold text-primary-50">V</div>
-      </a>
-      <div class="hidden md:flex space-x-8">
-        <a href="#about" class="hover:text-primary-400 transition-colors">About</a>
-        <a href="#experience" class="hover:text-primary-400 transition-colors">Journey</a>
-        <a href="#achievements" class="hover:text-primary-400 transition-colors">Achievements</a>
-        <a href="#projects" class="hover:text-primary-400 transition-colors">Work</a>
-        <a href="recommended_reads.html" class="hover:text-primary-400 transition-colors">Books</a>
-        <a href="#contact" class="hover:text-primary-400 transition-colors">Connect</a>
-      </div>
-      <button id="mobile-menu-button" aria-label="Toggle navigation menu" aria-expanded="false" class="md:hidden focus:outline-none text-primary-500">
-        <i class="fas fa-bars text-xl"></i>
-      </button>
-    </nav>
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-dark-800 w-full px-6 pb-4">
-      <div class="flex flex-col space-y-4">
-        <a href="#about" class="hover:text-primary-400 transition-colors">About</a>
-        <a href="#experience" class="hover:text-primary-400 transition-colors">Journey</a>
-        <a href="#achievements" class="hover:text-primary-400 transition-colors">Achievements</a>
-        <a href="#projects" class="hover:text-primary-400 transition-colors">Work</a>
-        <a href="recommended_reads.html" class="hover:text-primary-400 transition-colors">Books</a>
-        <a href="#contact" class="hover:text-primary-400 transition-colors">Connect</a>
-      </div>
-    </div>
-  </header>
-
-  <script>
-    document.getElementById('mobile-menu-button').addEventListener('click', function () {
-      const menu = document.getElementById('mobile-menu');
-      const isOpen = menu.classList.toggle('hidden') === false;
-      this.setAttribute('aria-expanded', String(isOpen));
-      const icon = this.querySelector('i');
-      if (icon.classList.contains('fa-bars')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-times');
-      } else {
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
-      }
-    });
-  </script>
-
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Valerio Valente | MLOps Engineer"
+  description="MLOps specialist building production-grade machine learning systems"
+>
   <main class="container mx-auto px-6 py-12">
     <!-- Hero Section -->
     <section id="about" class="mb-28">
       <div class="flex flex-col md:flex-row items-center gap-12">
         <div class="md:w-1/3 relative">
           <div class="gradient-border rounded-full p-1 w-64 h-64 mx-auto">
-            <img src="images/me1.jpg" alt="Valerio Valente professional portrait"
+            <img src="/images/me1.jpg" alt="Valerio Valente professional portrait"
               class="rounded-full w-full h-full object-cover">
           </div>
           <div
@@ -207,7 +47,7 @@
               class="border border-primary-600 text-primary-500 px-6 py-3 rounded-lg hover:bg-dark-700 transition flex items-center">
               <i class="fab fa-github mr-2"></i> Explore my GitHub
             </a>
-            <a href="files/valerio_valente_resume.pdf" download="valerio_valente_resume.pdf" target="_blank" rel="noopener noreferrer"
+            <a href="/files/valerio_valente_resume.pdf" download="valerio_valente_resume.pdf" target="_blank" rel="noopener noreferrer"
               class="border border-primary-600 text-primary-500 px-6 py-3 rounded-lg hover:bg-dark-700 transition flex items-center">
               <i class="fas fa-file-download mr-2"></i> Download Resume
             </a>
@@ -284,7 +124,7 @@
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="images/dmlmip.jpg" alt="Deploying Machine Learning in Production Logo"
+              <img src="/images/dmlmip.jpg" alt="Deploying Machine Learning in Production Logo"
                 class="rounded-lg shadow-md w-full sm:w-32 h-auto">
             </div>
             <!-- Icon & Text -->
@@ -317,7 +157,7 @@
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="images/mlip.jpg" alt="Machine Learning in Production Logo"
+              <img src="/images/mlip.jpg" alt="Machine Learning in Production Logo"
                 class="rounded-lg shadow-md w-full sm:w-32 h-auto">
             </div>
             <!-- Icon & Text -->
@@ -350,7 +190,7 @@
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="images/hsftf.jpg" alt="Huawei Seeds For The Future Logo"
+              <img src="/images/hsftf.jpg" alt="Huawei Seeds For The Future Logo"
                 class="rounded-lg shadow-md w-full sm:w-32 h-auto">
             </div>
             <!-- Icon & Text -->
@@ -382,7 +222,7 @@
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="images/rag.jpg" alt="Introduction to Retrieval Augmented Generation Logo"
+              <img src="/images/rag.jpg" alt="Introduction to Retrieval Augmented Generation Logo"
                 class="rounded-lg shadow-md w-full sm:w-32 h-auto">
             </div>
             <!-- Icon & Text -->
@@ -420,7 +260,7 @@
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="images/llmmamcp.jpg" alt="multi-agent system using model context protocol (MCP)"
+            <img src="/images/llmmamcp.jpg" alt="multi-agent system using model context protocol (MCP)"
               class="w-full h-full object-cover">
           </div>
           <h3 class="text-xl font-bold mb-2">LLM Multi-Agents</h3>
@@ -445,7 +285,7 @@
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="images/mlops.jpg" alt="FDA's recognition" class="w-full h-full object-cover">
+            <img src="/images/mlops.jpg" alt="FDA's recognition" class="w-full h-full object-cover">
           </div>
           <h3 class="text-xl font-bold mb-2">FDA's Recognition</h3>
           <p class="text-gray-400 mb-4 flex-grow">Recognized as a top 5 performer in a <a
@@ -463,7 +303,7 @@
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="images/pocs.jpg" alt="Predictive maintenance dashboard" class="w-full h-full object-cover">
+            <img src="/images/pocs.jpg" alt="Predictive maintenance dashboard" class="w-full h-full object-cover">
           </div>
           <h3 class="text-xl font-bold mb-2">POCs Creation</h3>
           <p class="text-gray-400 mb-4 flex-grow">Developed several POCs for clients providing minimum viable product
@@ -521,7 +361,7 @@
               <input type="checkbox" name="privacy" required class="mt-1">
               <span class="text-sm text-gray-300">
                 I agree to the
-                <a href="privacy.html" target="_blank" rel="noopener noreferrer" class="underline text-primary-500 hover:text-primary-400">
+                <a href="/privacy/" target="_blank" rel="noopener noreferrer" class="underline text-primary-500 hover:text-primary-400">
                   Privacy Policy
                 </a>
               </span>
@@ -534,10 +374,5 @@
         </form>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="mt-20 py-8 border-t border-dark-700">
-      <div class="container mx-auto px-6 text-center text-gray-400 text-sm">
-        <p>&copy; 2026 Valerio Valente. Built with curiosity and caffeine.</p>
-      </div>
-    </footer>
+  </main>
+</Base>
