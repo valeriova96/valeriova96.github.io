@@ -100,6 +100,13 @@
     .project-card:hover {
       transform: translateY(-5px);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-pulse-slow,
+      .animate-float {
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 
