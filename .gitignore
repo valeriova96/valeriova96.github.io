@@ -1,6 +1,9 @@
 # macOS
 .DS_Store
 
+# Local planning / spec docs (not for public repo)
+docs/superpowers/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
