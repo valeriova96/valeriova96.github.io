@@ -1,0 +1,69 @@
+---
+const { activeLink = '' } = Astro.props;
+const links = [
+  { href: '/#about', label: 'About', key: 'about' },
+  { href: '/#experience', label: 'Journey', key: 'experience' },
+  { href: '/#achievements', label: 'Achievements', key: 'achievements' },
+  { href: '/#projects', label: 'Work', key: 'projects' },
+  { href: '/recommended-reads/', label: 'Books', key: 'books' },
+  { href: '/#contact', label: 'Connect', key: 'contact' },
+];
+---
+<header class="bg-dark-800 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-dark-700">
+  <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="/" aria-label="Back to top" class="flex items-center text-2xl font-bold text-primary-500">
+      V
+      <div class="text-2xl font-bold text-primary-50">V</div>
+    </a>
+    <div class="hidden md:flex space-x-8">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class={link.key === activeLink
+            ? 'text-primary-400 transition-colors'
+            : 'hover:text-primary-400 transition-colors'}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+    <button
+      id="mobile-menu-button"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      class="md:hidden focus:outline-none text-primary-500"
+    >
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+  </nav>
+  <div id="mobile-menu" class="hidden md:hidden bg-dark-800 w-full px-6 pb-4">
+    <div class="flex flex-col space-y-4">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class={link.key === activeLink
+            ? 'text-primary-400 transition-colors'
+            : 'hover:text-primary-400 transition-colors'}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  document.getElementById('mobile-menu-button').addEventListener('click', function () {
+    const menu = document.getElementById('mobile-menu');
+    const isOpen = menu.classList.toggle('hidden') === false;
+    this.setAttribute('aria-expanded', String(isOpen));
+    const icon = this.querySelector('i');
+    if (icon.classList.contains('fa-bars')) {
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-times');
+    } else {
+      icon.classList.remove('fa-times');
+      icon.classList.add('fa-bars');
+    }
+  });
+</script>
