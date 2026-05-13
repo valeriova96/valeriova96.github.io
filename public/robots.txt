@@ -1,3 +1,5 @@
-# Placeholder. Real content lands in slice 2.
 User-agent: *
 Allow: /
+Disallow: /books_admin.html
+
+Sitemap: https://valeriova96.github.io/sitemap-index.xml
