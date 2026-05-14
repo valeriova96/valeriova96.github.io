@@ -6,6 +6,9 @@ import certDmlmip from '../assets/images/certs/dmlmip.jpg';
 import certMlip from '../assets/images/certs/mlip.jpg';
 import certHsftf from '../assets/images/certs/hsftf.jpg';
 import certRag from '../assets/images/certs/rag.jpg';
+import projLlmmamcp from '../assets/images/projects/llmmamcp.jpg';
+import projMlops from '../assets/images/projects/mlops.jpg';
+import projPocs from '../assets/images/projects/pocs.jpg';
 ---
 <Base
   title="Valerio Valente — Data Scientist & AI Engineer"
@@ -304,8 +307,14 @@ import certRag from '../assets/images/certs/rag.jpg';
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="/images/llmmamcp.jpg" alt="multi-agent system using model context protocol (MCP)"
-              class="w-full h-full object-cover">
+            <Picture
+              src={projLlmmamcp}
+              alt="multi-agent system using model context protocol (MCP)"
+              width={512}
+              formats={['avif', 'webp']}
+              loading="lazy"
+              class="w-full h-full object-cover"
+            />
           </div>
           <h3 class="text-xl font-bold mb-2">LLM Multi-Agents</h3>
           <p class="text-gray-400 mb-4 flex-grow">Developed and contributed to several LLM-based systems, including a
@@ -329,7 +338,14 @@ import certRag from '../assets/images/certs/rag.jpg';
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="/images/mlops.jpg" alt="FDA's recognition" class="w-full h-full object-cover">
+            <Picture
+              src={projMlops}
+              alt="FDA's recognition"
+              width={512}
+              formats={['avif', 'webp']}
+              loading="lazy"
+              class="w-full h-full object-cover"
+            />
           </div>
           <h3 class="text-xl font-bold mb-2">FDA's Recognition</h3>
           <p class="text-gray-400 mb-4 flex-grow">Recognized as a top 5 performer in a <a
@@ -347,7 +363,14 @@ import certRag from '../assets/images/certs/rag.jpg';
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="/images/pocs.jpg" alt="Predictive maintenance dashboard" class="w-full h-full object-cover">
+            <Picture
+              src={projPocs}
+              alt="Predictive maintenance dashboard"
+              width={512}
+              formats={['avif', 'webp']}
+              loading="lazy"
+              class="w-full h-full object-cover"
+            />
           </div>
           <h3 class="text-xl font-bold mb-2">POCs Creation</h3>
           <p class="text-gray-400 mb-4 flex-grow">Developed several POCs for clients providing minimum viable product
