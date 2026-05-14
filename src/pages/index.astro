@@ -1,5 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Picture } from 'astro:assets';
+import hero from '../assets/images/me2.jpg';
+import certDmlmip from '../assets/images/certs/dmlmip.jpg';
+import certMlip from '../assets/images/certs/mlip.jpg';
+import certHsftf from '../assets/images/certs/hsftf.jpg';
+import certRag from '../assets/images/certs/rag.jpg';
+import projLlmmamcp from '../assets/images/projects/llmmamcp.jpg';
+import projMlops from '../assets/images/projects/mlops.jpg';
+import projPocs from '../assets/images/projects/pocs.jpg';
 ---
 <Base
   title="Valerio Valente — Data Scientist & AI Engineer"
@@ -13,8 +22,20 @@ import Base from '../layouts/Base.astro';
       <div class="flex flex-col md:flex-row items-center gap-12">
         <div class="md:w-1/3 relative">
           <div class="gradient-border rounded-full p-1 w-64 h-64 mx-auto">
-            <img src="/images/me2.JPG" alt="Valerio Valente professional portrait"
-              class="rounded-full w-full h-full object-cover">
+            {/* sizes is intentionally non-responsive: the container is w-64 (256px) at every breakpoint. */}
+            {/* If the hero layout ever changes responsive sizes, update the `sizes` attribute alongside. */}
+            <Picture
+              src={hero}
+              alt="Valerio Valente professional portrait"
+              widths={[512, 1024]}
+              sizes="(max-width: 768px) 256px, 256px"
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              loading="eager"
+              fetchpriority="high"
+              pictureAttributes={{ class: 'block rounded-full w-full h-full' }}
+              class="rounded-full w-full h-full object-cover"
+            />
           </div>
           <div
             class="absolute -bottom-5 -right-5 bg-primary-600 text-dark-900 px-4 py-2 rounded-lg font-mono text-sm font-bold">
@@ -126,8 +147,14 @@ import Base from '../layouts/Base.astro';
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="/images/dmlmip.jpg" alt="Deploying Machine Learning in Production Logo"
-                class="rounded-lg shadow-md w-full sm:w-32 h-auto">
+              <Picture
+                src={certDmlmip}
+                alt="Deploying Machine Learning in Production Logo"
+                width={256}
+                formats={['avif', 'webp']}
+                loading="lazy"
+                class="rounded-lg shadow-md w-full sm:w-32 h-auto"
+              />
             </div>
             <!-- Icon & Text -->
             <div class="flex-1 sm:order-1">
@@ -159,8 +186,14 @@ import Base from '../layouts/Base.astro';
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="/images/mlip.jpg" alt="Machine Learning in Production Logo"
-                class="rounded-lg shadow-md w-full sm:w-32 h-auto">
+              <Picture
+                src={certMlip}
+                alt="Machine Learning in Production Logo"
+                width={256}
+                formats={['avif', 'webp']}
+                loading="lazy"
+                class="rounded-lg shadow-md w-full sm:w-32 h-auto"
+              />
             </div>
             <!-- Icon & Text -->
             <div class="flex-1 sm:order-1">
@@ -192,8 +225,14 @@ import Base from '../layouts/Base.astro';
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="/images/hsftf.jpg" alt="Huawei Seeds For The Future Logo"
-                class="rounded-lg shadow-md w-full sm:w-32 h-auto">
+              <Picture
+                src={certHsftf}
+                alt="Huawei Seeds For The Future Logo"
+                width={256}
+                formats={['avif', 'webp']}
+                loading="lazy"
+                class="rounded-lg shadow-md w-full sm:w-32 h-auto"
+              />
             </div>
             <!-- Icon & Text -->
             <div class="flex-1 sm:order-1">
@@ -224,8 +263,14 @@ import Base from '../layouts/Base.astro';
           <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
             <!-- Image (top on mobile, right on desktop) -->
             <div class="flex-shrink-0 sm:order-2">
-              <img src="/images/rag.jpg" alt="Introduction to Retrieval Augmented Generation Logo"
-                class="rounded-lg shadow-md w-full sm:w-32 h-auto">
+              <Picture
+                src={certRag}
+                alt="Introduction to Retrieval Augmented Generation Logo"
+                width={256}
+                formats={['avif', 'webp']}
+                loading="lazy"
+                class="rounded-lg shadow-md w-full sm:w-32 h-auto"
+              />
             </div>
             <!-- Icon & Text -->
             <div class="flex-1 sm:order-1">
@@ -262,8 +307,15 @@ import Base from '../layouts/Base.astro';
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="/images/llmmamcp.jpg" alt="multi-agent system using model context protocol (MCP)"
-              class="w-full h-full object-cover">
+            <Picture
+              src={projLlmmamcp}
+              alt="multi-agent system using model context protocol (MCP)"
+              width={512}
+              formats={['avif', 'webp']}
+              loading="lazy"
+              pictureAttributes={{ class: 'block' }}
+              class="w-full h-auto object-cover"
+            />
           </div>
           <h3 class="text-xl font-bold mb-2">LLM Multi-Agents</h3>
           <p class="text-gray-400 mb-4 flex-grow">Developed and contributed to several LLM-based systems, including a
@@ -287,7 +339,15 @@ import Base from '../layouts/Base.astro';
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="/images/mlops.jpg" alt="FDA's recognition" class="w-full h-full object-cover">
+            <Picture
+              src={projMlops}
+              alt="FDA's recognition"
+              width={512}
+              formats={['avif', 'webp']}
+              loading="lazy"
+              pictureAttributes={{ class: 'block' }}
+              class="w-full h-auto object-cover"
+            />
           </div>
           <h3 class="text-xl font-bold mb-2">FDA's Recognition</h3>
           <p class="text-gray-400 mb-4 flex-grow">Recognized as a top 5 performer in a <a
@@ -305,7 +365,15 @@ import Base from '../layouts/Base.astro';
         <div
           class="project-card bg-dark-800 p-6 rounded-lg border border-dark-700 hover:border-primary-500/50 transition h-full flex flex-col">
           <div class="mb-4 overflow-hidden rounded-lg">
-            <img src="/images/pocs.jpg" alt="Predictive maintenance dashboard" class="w-full h-full object-cover">
+            <Picture
+              src={projPocs}
+              alt="Predictive maintenance dashboard"
+              width={512}
+              formats={['avif', 'webp']}
+              loading="lazy"
+              pictureAttributes={{ class: 'block' }}
+              class="w-full h-auto object-cover"
+            />
           </div>
           <h3 class="text-xl font-bold mb-2">POCs Creation</h3>
           <p class="text-gray-400 mb-4 flex-grow">Developed several POCs for clients providing minimum viable product
