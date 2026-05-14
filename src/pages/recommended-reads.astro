@@ -42,7 +42,14 @@ function getBookLink(book) {
           <article class="book-row rounded-lg p-4 sm:p-6" id={`${id}-container`}>
             <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
               <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg bg-dark-700 flex items-center justify-center">
-                <img src={resolveAssetPath(book.image)} alt={imageAlt} class="w-full h-full object-cover" />
+                <img
+                  src={resolveAssetPath(book.image)}
+                  alt={imageAlt}
+                  width="96"
+                  height="128"
+                  loading="lazy"
+                  class="w-full h-full object-cover"
+                />
               </div>
               <div class="flex-grow min-w-0">
                 <div class="flex items-start justify-between gap-4 mb-2">
