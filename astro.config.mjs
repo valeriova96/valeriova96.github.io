@@ -6,9 +6,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://valeriova96.github.io',
   integrations: [
-    sitemap({
-      filter: (page) => !page.includes('books_admin'),
-    }),
+    sitemap(),
   ],
   vite: {
     plugins: [tailwindcss()],
