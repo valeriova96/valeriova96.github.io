@@ -20,3 +20,6 @@ dist/
 
 # Local-only visual diff screenshots
 .visual-diff-screenshots/
+
+# axe-core CLI reports
+axe-reports/
