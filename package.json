@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "optimize:images": "node scripts/optimize-images.mjs",
-    "a11y": "node scripts/a11y.mjs"
+    "a11y": "node scripts/a11y.mjs",
+    "admin": "npx --yes serve tools/admin -l 4321"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
