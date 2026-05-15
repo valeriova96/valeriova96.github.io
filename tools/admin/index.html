@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Books Admin | Valerio Valente</title>
+  <title>Books Admin (local-only) | Valerio Valente</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
@@ -22,9 +22,9 @@
 </head>
 <body class="min-h-screen">
   <main class="container mx-auto px-6 py-12 max-w-4xl">
-    <h1 class="text-3xl font-bold mb-3 text-white">Books Admin</h1>
+    <h1 class="text-3xl font-bold mb-3 text-white">Books Admin <span class="text-base font-normal text-gray-400">(local-only)</span></h1>
     <p class="text-gray-300 mb-6">
-      Add a new book to files/books.json and publish it via GitHub API. Your token is only used in this browser session and is never stored.
+      This page is served locally by <code class="text-orange-400">npm run admin</code> and is never published to the live site. Use it to add or edit a book in <code class="text-orange-400">files/books.json</code> and commit the change via the GitHub API. Your token is held only in this browser tab and is never persisted to disk.
     </p>
 
     <div class="rounded-lg border border-zinc-800 bg-zinc-900 p-6 mb-8">
