@@ -26,11 +26,22 @@ const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'].join(
 const FAIL_IMPACTS = new Set(['serious', 'critical']);
 const BOOT_TIMEOUT_MS = 30_000;
 
-async function waitForPreview() {
+async function waitForPreview(preview) {
   const start = Date.now();
+  let earlyExitCode = null;
+  preview.once('exit', (code) => {
+    earlyExitCode = code ?? -1;
+  });
   while (Date.now() - start < BOOT_TIMEOUT_MS) {
+    if (earlyExitCode !== null) {
+      throw new Error(
+        `Preview server exited early with code ${earlyExitCode} ` +
+          `before becoming reachable. Port ${PREVIEW_PORT} may be in use, ` +
+          `or the build is missing. Try: lsof -ti:${PREVIEW_PORT} | xargs kill -9`,
+      );
+    }
     try {
-      const res = await fetch(BASE_URL, { method: 'GET' });
+      const res = await fetch(BASE_URL, { method: 'GET', signal: AbortSignal.timeout(1000) });
       if (res.ok || res.status === 404) return; // any HTTP response means the server is up
     } catch {}
     await sleep(250);
@@ -111,6 +122,16 @@ function summarize(reports) {
       }
     }
   }
+  // Detect missing URLs — axe-core may have failed to load one.
+  const seenUrls = new Set(reports.map((r) => r.url).filter(Boolean));
+  const expected = [...URLS_FULL, ...URLS_PRIVACY];
+  for (const url of expected) {
+    if (!seenUrls.has(url)) {
+      console.log(`\n${url}`);
+      console.log('  WARNING: no report found — axe-core may have failed to scan this URL.');
+      totalSeriousCritical += 1;
+    }
+  }
   return totalSeriousCritical;
 }
 
@@ -125,19 +146,31 @@ async function main() {
   const preview = startPreview();
   let exitCode = 1;
   try {
-    await waitForPreview();
-    await runAxe(URLS_FULL, 'report-full.json');
-    await runAxe(URLS_PRIVACY, 'report-privacy.json', PRIVACY_DISABLED_RULES);
+    await waitForPreview(preview);
+    const fullCode = await runAxe(URLS_FULL, 'report-full.json');
+    const privacyCode = await runAxe(URLS_PRIVACY, 'report-privacy.json', PRIVACY_DISABLED_RULES);
+    if (fullCode !== 0 || privacyCode !== 0) {
+      // axe-core returns non-zero both for violations (expected) and for URL load failures.
+      // If a report file is missing, we'll surface that in the summary; otherwise this is informational.
+      console.log(`\nNote: axe-core exited non-zero (full=${fullCode}, privacy=${privacyCode}). Verify report files below.`);
+    }
     const reports = await readReports();
     const blocking = summarize(reports);
     console.log(`\n== Summary ==`);
     console.log(`serious + critical violations across all pages: ${blocking}`);
     exitCode = blocking === 0 ? 0 : 1;
   } finally {
+    const exited = new Promise((r) => preview.once('exit', r));
     preview.kill('SIGTERM');
-    // Best-effort: give it 500ms, then force.
-    await sleep(500);
-    if (!preview.killed) preview.kill('SIGKILL');
+    const TIMEOUT_MARKER = Symbol('timeout');
+    const winner = await Promise.race([
+      exited,
+      sleep(500).then(() => TIMEOUT_MARKER),
+    ]);
+    if (winner === TIMEOUT_MARKER) {
+      preview.kill('SIGKILL');
+      await exited; // wait for actual reap so the port is released
+    }
   }
   process.exit(exitCode);
 }
