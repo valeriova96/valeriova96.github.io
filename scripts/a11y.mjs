@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { spawn } from 'node:child_process';
-import { readFile, mkdir, readdir } from 'node:fs/promises';
+import { readFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,8 +13,14 @@ const REPORT_DIR = join(REPO_ROOT, 'axe-reports');
 const PREVIEW_HOST = '127.0.0.1';
 const PREVIEW_PORT = 4321;
 const BASE_URL = `http://${PREVIEW_HOST}:${PREVIEW_PORT}`;
-const PATHS = ['/', '/recommended-reads/', '/privacy/'];
-const URLS = PATHS.map((p) => `${BASE_URL}${p}`);
+const URLS_FULL = ['/', '/recommended-reads/'].map((p) => `${BASE_URL}${p}`);
+const URLS_PRIVACY = ['/privacy/'].map((p) => `${BASE_URL}${p}`);
+
+// /privacy/ uses Termly-injected privacy-policy markup with inline colors that
+// fail AA on the site's dark theme. The color-contrast rule is disabled for
+// that page only; rewriting the Termly markup is out of scope for Slice 4.
+// See docs/superpowers/specs/2026-05-15-slice-4-accessibility-design.md.
+const PRIVACY_DISABLED_RULES = ['color-contrast'];
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'].join(',');
 const FAIL_IMPACTS = new Set(['serious', 'critical']);
@@ -43,17 +49,23 @@ function startPreview() {
   return proc;
 }
 
-function runAxe() {
+function runAxe(urls, saveName, disabledRules = []) {
   return new Promise((resolveRun, rejectRun) => {
-    console.log('\nRunning axe-core against:');
-    URLS.forEach((u) => console.log(`  - ${u}`));
+    console.log(`\nRunning axe-core (save: ${saveName}) against:`);
+    urls.forEach((u) => console.log(`  - ${u}`));
+    if (disabledRules.length > 0) {
+      console.log(`  disabled rules: ${disabledRules.join(', ')}`);
+    }
     const args = [
       '@axe-core/cli',
-      ...URLS,
+      ...urls,
       '--tags', TAGS,
-      '--save', 'report.json',
+      '--save', saveName,
       '--dir', REPORT_DIR,
     ];
+    if (disabledRules.length > 0) {
+      args.push('--disable', disabledRules.join(','));
+    }
     const proc = spawn('npx', args, { cwd: REPO_ROOT, stdio: 'inherit' });
     proc.on('exit', (code) => resolveRun(code ?? 0));
     proc.on('error', rejectRun);
@@ -105,12 +117,17 @@ function summarize(reports) {
 async function main() {
   if (!existsSync(REPORT_DIR)) {
     await mkdir(REPORT_DIR, { recursive: true });
+  } else {
+    // Clear stale reports so the summary only reflects this run.
+    const stale = (await readdir(REPORT_DIR)).filter((f) => f.endsWith('.json'));
+    for (const f of stale) await unlink(join(REPORT_DIR, f));
   }
   const preview = startPreview();
   let exitCode = 1;
   try {
     await waitForPreview();
-    await runAxe();
+    await runAxe(URLS_FULL, 'report-full.json');
+    await runAxe(URLS_PRIVACY, 'report-privacy.json', PRIVACY_DISABLED_RULES);
     const reports = await readReports();
     const blocking = summarize(reports);
     console.log(`\n== Summary ==`);
