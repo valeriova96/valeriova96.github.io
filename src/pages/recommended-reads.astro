@@ -27,7 +27,7 @@ function getBookLink(book) {
   description="Books that shaped my work in machine learning, AI engineering, and shipping ML systems to production. Curated notes and reviews."
   activeLink="books"
 >
-  <main class="container mx-auto px-6 py-12 max-w-6xl">
+  <div class="container mx-auto px-6 py-12 max-w-6xl">
     <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Recommended Reads</h1>
     <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
       Books that have shaped my understanding of ML, AI Engineering, and building production-grade systems. This collection is in no particular order.
@@ -90,7 +90,7 @@ function getBookLink(book) {
         );
       })}
     </div>
-  </main>
+  </div>
 
   <script>
     document.querySelectorAll('button[data-target]').forEach((btn) => {
