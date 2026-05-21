@@ -2,106 +2,304 @@
 import Base from '../layouts/Base.astro';
 import books from '../../public/files/books.json';
 
-function resolveAssetPath(value) {
-  if (!value) return '';
-  if (/^(https?:|data:|\/)/i.test(value)) return value;
-  return '/' + value;
-}
-
 function getBookLink(book) {
   if (book.amazonUrl) {
-    return { url: book.amazonUrl, iconClass: 'fab fa-amazon', label: 'View on Amazon' };
+    return { url: book.amazonUrl, label: 'View on Amazon' };
   }
   if (book.externalUrl) {
-    return {
-      url: book.externalUrl,
-      iconClass: 'fas fa-link',
-      label: book.externalLabel || 'View resource',
-    };
+    return { url: book.externalUrl, label: book.externalLabel || 'View resource' };
   }
   return null;
 }
 ---
 <Base
-  title="Recommended Reads — Valerio Valente"
-  description="Books that shaped my work in machine learning, AI engineering, and shipping ML systems to production. Curated notes and reviews."
+  title="Reading shelf, Valerio Valente"
+  description="Books that shaped my work in machine learning, AI engineering, and shipping ML systems to production. Notes and short reviews."
   activeLink="books"
 >
-  <div class="container mx-auto px-6 py-12 max-w-6xl">
-    <h1 class="text-3xl md:text-4xl font-bold text-center mb-4">Recommended Reads</h1>
-    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-      Books that have shaped my understanding of ML, AI Engineering, and building production-grade systems. This collection is in no particular order.
-    </p>
+  <article class="page">
+    <header class="reads__head">
+      <p class="section-eyebrow">Reading Shelf</p>
+      <h1 class="section-title reads__title">Books I keep coming back to.</h1>
+      <p class="prose reads__lede">
+        Books that shaped how I think about machine learning, AI engineering, and shipping
+        production-grade systems. Listed in no particular order. The reviews are honest; some are
+        warmer than others.
+      </p>
+    </header>
 
-    <div class="space-y-6">
+    <ol class="entries" role="list">
       {books.map((book, i) => {
         const id = `book-${i + 1}`;
         const link = getBookLink(book);
-        const imageAlt = book.imageAlt || book.title;
+        const hasFullReview = Boolean(book.fullReview);
         return (
-          <article class="book-row rounded-lg p-4 sm:p-6" id={`${id}-container`}>
-            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 sm:items-start">
-              <div class="w-24 h-32 flex-shrink-0 overflow-hidden rounded-lg shadow-lg bg-dark-700 flex items-center justify-center">
-                <img
-                  src={resolveAssetPath(book.image)}
-                  alt={imageAlt}
-                  width="96"
-                  height="128"
-                  loading="lazy"
-                  class="w-full h-full object-cover"
+          <li class="entry book-entry">
+            <p class="marginalia marginalia--year entry__year">
+              {book.publisher}
+              <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
+              {book.year}
+            </p>
+            <div class="entry__body">
+              <h2 class="entry__title">
+                {book.title}
+                <span class="entry__company">
+                  <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
+                  {book.author}
+                </span>
+              </h2>
+
+              <div class="rich-review book-entry__preview" set:html={book.preview} />
+
+              {hasFullReview && (
+                <div
+                  id={`${id}-full`}
+                  class="rich-review book-entry__full"
+                  hidden
+                  set:html={book.fullReview}
                 />
-              </div>
-              <div class="flex-grow min-w-0">
-                <div class="flex items-start justify-between gap-4 mb-2">
-                  <div>
-                    <h3 class="text-xl font-semibold text-white mb-1">{book.title}</h3>
-                    <p class="text-gray-400 text-sm">{book.author} • {book.publisher} • {book.year}</p>
-                  </div>
-                </div>
-                <div class="text-gray-300 text-sm mt-3 rich-review">
-                  <div set:html={book.preview} />
-                  {book.fullReview && (
-                    <div id={`${id}-full`} class="hidden mt-2" set:html={book.fullReview} />
-                  )}
-                </div>
-                {book.fullReview && (
+              )}
+
+              <p class="book-entry__actions marginalia">
+                {hasFullReview && (
                   <button
-                    id={`${id}-btn`}
+                    type="button"
+                    class="read-more"
                     data-target={`${id}-full`}
-                    class="text-primary-500 hover:text-primary-400 ml-1 underline text-sm"
+                    aria-expanded="false"
+                    aria-controls={`${id}-full`}
                   >Read more</button>
                 )}
-                {link && (
-                  <div class="mt-3">
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors text-sm font-medium"
-                    >
-                      <i class={link.iconClass}></i>
-                      {link.label}
-                    </a>
-                  </div>
+                {hasFullReview && link && (
+                  <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
                 )}
-              </div>
+                {link && (
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>
+                )}
+              </p>
             </div>
-          </article>
+          </li>
         );
       })}
-    </div>
-  </div>
+    </ol>
+  </article>
 
   <script>
-    document.querySelectorAll('button[data-target]').forEach((btn) => {
+    document.querySelectorAll('button.read-more[data-target]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const targetId = btn.getAttribute('data-target');
         if (!targetId) return;
         const target = document.getElementById(targetId);
         if (!target) return;
-        const isNowHidden = target.classList.toggle('hidden');
-        btn.textContent = isNowHidden ? 'Read more' : 'Read less';
+        const isHidden = target.hasAttribute('hidden');
+        if (isHidden) {
+          target.removeAttribute('hidden');
+          btn.textContent = 'Read less';
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          target.setAttribute('hidden', '');
+          btn.textContent = 'Read more';
+          btn.setAttribute('aria-expanded', 'false');
+        }
       });
     });
   </script>
 </Base>
+
+<style>
+  .page {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.25rem, 3vw, 2.5rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .reads__head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    max-width: 60ch;
+  }
+
+  .reads__title {
+    font-size: clamp(2rem, 3vw + 1.2rem, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .reads__lede {
+    margin-top: 0.4rem;
+    color: var(--color-ink);
+  }
+
+  /* ---------- Reused entry skeleton (same as homepage) ---------- */
+
+  .entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .entries .entry:first-child {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  @media (min-width: 720px) {
+    .entry {
+      grid-template-columns: 10rem 1fr;
+      gap: 2rem;
+      padding-block: 2.25rem;
+    }
+  }
+
+  .entry__year {
+    padding-top: 0.4rem;
+    color: var(--color-ink-soft);
+  }
+
+  .entry__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-width: 0;
+  }
+
+  .entry__title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: clamp(1.2rem, 0.5vw + 1.05rem, 1.4rem);
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    color: var(--color-ink);
+  }
+
+  .entry__company {
+    font-weight: 400;
+    color: var(--color-ink-soft);
+  }
+
+  /* ---------- Book entry text ---------- */
+
+  .book-entry__preview,
+  .book-entry__full {
+    color: var(--color-ink);
+    font-size: 1.025rem;
+    line-height: 1.65;
+    max-width: 68ch;
+  }
+
+  .book-entry__full {
+    margin-top: 0.3rem;
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .book-entry__preview :global(p),
+  .book-entry__full :global(p) {
+    margin: 0 0 0.9em;
+  }
+
+  .book-entry__preview :global(p:last-child),
+  .book-entry__full :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .book-entry__preview :global(b),
+  .book-entry__full :global(b) {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .book-entry__preview :global(a),
+  .book-entry__full :global(a) {
+    color: var(--color-terracotta);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in oklch, var(--color-terracotta) 55%, transparent);
+  }
+
+  .book-entry__preview :global(a:hover),
+  .book-entry__full :global(a:hover) {
+    color: var(--color-terracotta-deep);
+    text-decoration-color: var(--color-terracotta-deep);
+  }
+
+  .book-entry__preview :global(ul),
+  .book-entry__full :global(ul),
+  .book-entry__preview :global(ol),
+  .book-entry__full :global(ol) {
+    margin: 0.5em 0 0.9em;
+    padding-left: 1.4em;
+  }
+
+  .book-entry__preview :global(li),
+  .book-entry__full :global(li) {
+    margin-top: 0.3rem;
+  }
+
+  .book-entry__full :global(br) {
+    display: block;
+    content: '';
+    margin-top: 0.6em;
+  }
+
+  /* ---------- Actions row ---------- */
+
+  .book-entry__actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem;
+    color: var(--color-ink-soft);
+    margin-top: 0.2rem;
+  }
+
+  .book-entry__actions a {
+    color: var(--color-terracotta);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in oklch, var(--color-terracotta) 55%, transparent);
+    transition: color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                text-decoration-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .book-entry__actions a:hover {
+    color: var(--color-terracotta-deep);
+    text-decoration-color: var(--color-terracotta-deep);
+  }
+
+  .read-more {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-terracotta);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in oklch, var(--color-terracotta) 55%, transparent);
+    transition: color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+                text-decoration-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .read-more:hover {
+    color: var(--color-terracotta-deep);
+    text-decoration-color: var(--color-terracotta-deep);
+  }
+</style>

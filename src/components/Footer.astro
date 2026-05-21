@@ -1,7 +1,43 @@
 ---
+const year = new Date().getFullYear();
 ---
-<footer class="mt-20 py-8 border-t border-dark-700">
-  <div class="container mx-auto px-6 text-center text-gray-400 text-sm">
-    <p>&copy; 2026 Valerio Valente. Built with curiosity and caffeine.</p>
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p class="marginalia">
+      &copy; {year} Valerio Valente
+      <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
+      Bologna, Italy
+      <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
+      <a href="/privacy/">Privacy</a>
+    </p>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    margin-top: 6rem;
+    padding: 1.75rem 0 2.5rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .site-footer__inner {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .site-footer .marginalia a {
+    color: var(--color-ink-soft);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in oklch, var(--color-ink-soft) 40%, transparent);
+    transition: color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+                text-decoration-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-footer .marginalia a:hover {
+    color: var(--color-terracotta-deep);
+    text-decoration-color: var(--color-terracotta-deep);
+  }
+</style>

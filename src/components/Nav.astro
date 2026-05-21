@@ -1,12 +1,10 @@
 ---
 const { activeLink = '' } = Astro.props;
+
 const links = [
-  { href: '/#about', label: 'About', key: 'about' },
-  { href: '/#experience', label: 'Journey', key: 'experience' },
-  { href: '/#achievements', label: 'Achievements', key: 'achievements' },
-  { href: '/#projects', label: 'Work', key: 'projects' },
-  { href: '/recommended-reads/', label: 'Books', key: 'books' },
-  { href: '/#contact', label: 'Connect', key: 'contact' },
+  { href: '/#work', label: 'Work', key: 'work' },
+  { href: '/recommended-reads/', label: 'Reading', key: 'books' },
+  { href: '/#contact', label: 'Contact', key: 'contact' },
 ];
 
 const currentPathname = Astro.url.pathname;
@@ -15,63 +13,214 @@ const linkPathname = (href) => new URL(href, Astro.url).pathname;
 const isCurrent = (link) =>
   !linkHasHash(link.href) && linkPathname(link.href) === currentPathname;
 ---
-<header class="bg-dark-800 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-dark-700">
-  <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="/" aria-label="Back to top" class="flex items-center text-2xl font-bold text-primary-500">
-      V
-      <div class="text-2xl font-bold text-primary-50">V</div>
+<header class="site-nav sticky top-0 z-50">
+  <nav class="site-nav__inner">
+    <a href="/" aria-label="Valerio Valente, back to top" class="wordmark">
+      Valerio <span>Valente</span>
     </a>
-    <div class="hidden md:flex space-x-8">
+
+    <ul class="site-nav__links" role="list">
       {links.map((link) => (
-        <a
-          href={link.href}
-          aria-current={isCurrent(link) ? 'page' : undefined}
-          class={link.key === activeLink
-            ? 'text-primary-400 transition-colors'
-            : 'hover:text-primary-400 transition-colors'}
-        >
-          {link.label}
-        </a>
+        <li>
+          <a
+            href={link.href}
+            aria-current={isCurrent(link) ? 'page' : undefined}
+            data-active={link.key === activeLink ? 'true' : undefined}
+            class="site-nav__link"
+          >
+            {link.label}
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
+
     <button
       id="mobile-menu-button"
+      type="button"
       aria-label="Toggle navigation menu"
       aria-expanded="false"
-      class="md:hidden text-primary-500"
+      aria-controls="mobile-menu"
+      class="site-nav__toggle"
     >
-      <i class="fas fa-bars text-xl" aria-hidden="true"></i>
+      <svg class="site-nav__icon" data-icon="open" width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <path d="M3 7h16" />
+        <path d="M3 15h16" />
+      </svg>
+      <svg class="site-nav__icon" data-icon="close" width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" hidden>
+        <path d="M5 5l12 12" />
+        <path d="M17 5L5 17" />
+      </svg>
     </button>
   </nav>
-  <div id="mobile-menu" class="hidden md:hidden bg-dark-800 w-full px-6 pb-4">
-    <div class="flex flex-col space-y-4">
+
+  <div id="mobile-menu" class="site-nav__mobile" hidden>
+    <ul role="list">
       {links.map((link) => (
-        <a
-          href={link.href}
-          aria-current={isCurrent(link) ? 'page' : undefined}
-          class={link.key === activeLink
-            ? 'text-primary-400 transition-colors'
-            : 'hover:text-primary-400 transition-colors'}
-        >
-          {link.label}
-        </a>
+        <li>
+          <a
+            href={link.href}
+            aria-current={isCurrent(link) ? 'page' : undefined}
+            data-active={link.key === activeLink ? 'true' : undefined}
+            class="site-nav__link"
+          >
+            {link.label}
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 </header>
 
-<script is:inline>
-  document.getElementById('mobile-menu-button').addEventListener('click', function () {
-    const menu = document.getElementById('mobile-menu');
-    const isOpen = menu.classList.toggle('hidden') === false;
-    this.setAttribute('aria-expanded', String(isOpen));
-    const icon = this.querySelector('i');
-    if (icon.classList.contains('fa-bars')) {
-      icon.classList.remove('fa-bars');
-      icon.classList.add('fa-times');
-    } else {
-      icon.classList.remove('fa-times');
-      icon.classList.add('fa-bars');
+<style>
+  .site-nav {
+    background-color: var(--color-paper);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-nav[data-scrolled='true'] {
+    border-bottom-color: var(--color-rule);
+  }
+
+  .site-nav__inner {
+    max-width: 76rem;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.18rem;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    line-height: 1;
+  }
+
+  .wordmark span {
+    color: var(--color-ink-soft);
+    font-weight: 400;
+  }
+
+  .site-nav__links {
+    display: none;
+    align-items: baseline;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 720px) {
+    .site-nav__links {
+      display: flex;
     }
-  });
+  }
+
+  .site-nav__link {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--color-ink-soft);
+    position: relative;
+    padding: 2px 0;
+    transition: color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-nav__link:hover {
+    color: var(--color-ink);
+  }
+
+  .site-nav__link[aria-current='page'],
+  .site-nav__link[data-active='true'] {
+    color: var(--color-ink);
+  }
+
+  .site-nav__link[aria-current='page']::after,
+  .site-nav__link[data-active='true']::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background-color: var(--color-terracotta);
+  }
+
+  .site-nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ink);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 2px;
+    width: 44px;
+    height: 44px;
+    margin: -10px;
+  }
+
+  @media (min-width: 720px) {
+    .site-nav__toggle {
+      display: none;
+    }
+  }
+
+  .site-nav__mobile {
+    border-top: 1px solid var(--color-rule);
+    background-color: var(--color-paper);
+  }
+
+  .site-nav__mobile ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.75rem 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const header = document.querySelector('.site-nav');
+    const toggle = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    const iconOpen = toggle?.querySelector('[data-icon="open"]');
+    const iconClose = toggle?.querySelector('[data-icon="close"]');
+
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const open = menu.hasAttribute('hidden');
+        if (open) {
+          menu.removeAttribute('hidden');
+          iconOpen?.setAttribute('hidden', '');
+          iconClose?.removeAttribute('hidden');
+        } else {
+          menu.setAttribute('hidden', '');
+          iconClose?.setAttribute('hidden', '');
+          iconOpen?.removeAttribute('hidden');
+        }
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+    }
+
+    if (header) {
+      const onScroll = () => {
+        if (window.scrollY > 2) {
+          header.setAttribute('data-scrolled', 'true');
+        } else {
+          header.removeAttribute('data-scrolled');
+        }
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  })();
 </script>

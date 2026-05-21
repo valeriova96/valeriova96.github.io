@@ -23,3 +23,11 @@ dist/
 
 # axe-core CLI reports
 axe-reports/
+
+# Impeccable design skill (local-only context + session state)
+PRODUCT.md
+DESIGN.md
+.impeccable.md
+.impeccable/
+.impeccable-live.json
+.impeccable-live/
