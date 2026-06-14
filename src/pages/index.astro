@@ -6,59 +6,43 @@ import sourdough from '../assets/images/sourdough.jpg';
 
 const experience = [
   {
-    period: '2025 · now',
+    period: '2026 · now',
     role: 'Data Scientist',
-    company: 'InSilicoTrials Technologies',
+    company: 'Aixelerate',
+    companyHref: 'https://www.aixelerateresearch.com/',
     summary:
-      "Synthetic data generation, agentic systems built on the Model Context Protocol, explainable AI, and Azure deployments. I also help turn rough ideas from clients into POCs that actually run.",
-    tags: ['Agentic AI', 'MCP', 'Azure', 'Explainable AI', 'Synthetic Data'],
+      'Owning the AI layer of a research platform: agent-driven analysis tools, explainable statistical components, and the product surfaces around them. The job is moving the multi-agent architecture out of dev and into production-grade. In practice, that means deleting the parts that only worked on a good day. The UX gets the same scrutiny as the model.',
   },
   {
-    period: '2024 · 2025',
-    role: 'Junior Data Scientist',
+    period: '2024 · 2026',
+    role: 'Data Scientist',
     company: 'InSilicoTrials Technologies',
+    companyHref: 'https://insilicotrials.com/',
     summary:
-      'Trained and shipped models on clinical data, wrote internal Python packages that took friction out of day-to-day ML work, and ran coding interviews and onboarding for new data scientists.',
-    tags: ['Python', 'ML', 'Internal tooling'],
+      "Designed the company's multi-agent chatbot, including a Model Context Protocol server that gave the LLM real tools instead of hallucinations dressed as ones. Shipped a tabular synthetic-data workflow on a SOTA foundation model, plus the reproducible Azure ML pipelines that kept the research teams from sharing notebooks named `final_v3_real.ipynb`. Placed top 5 in an FDA challenge with a regulatory-compliant RAG and its own evaluation harness.",
   },
   {
     period: '2023 · 2024',
     role: 'Junior Data Scientist',
     company: 'Miraitek',
+    companyHref: 'https://www.miraitek.com/',
     summary:
-      'RAG pipelines on AWS, anomaly-detection algorithms for industrial signals, and BI dashboards driven by SQL for manufacturing analytics.',
-    tags: ['RAG', 'AWS', 'Anomaly detection', 'SQL'],
+      'Built a RAG retrieval agent on AWS that cut document-processing time for manufacturing clients, and surfaced enough operational waste through pattern recognition to lift production performance by 7%. Apache Superset + SQL dashboards turned the rest of the guesswork into numbers people could argue about.',
   },
 ];
 
 const projects = [
   {
     period: '2025',
-    title: 'LLM multi-agent systems',
+    title: 'mcpadapt, upstream contribution',
     summary:
-      'Designed and contributed to several LLM systems, including a multi-agent setup with a Model Context Protocol server exposing specialised tools. Contributed upstream to the open-source mcpadapt library.',
-    tags: ['LLM', 'RAG', 'MCP', 'LlamaIndex'],
-    links: [
-      { label: 'Model Context Protocol', href: 'https://www.anthropic.com/news/model-context-protocol' },
-      { label: 'mcpadapt', href: 'https://github.com/grll/mcpadapt' },
-    ],
+      `Upstream contribution to <a href="https://github.com/grll/mcpadapt" target="_blank" rel="noopener noreferrer">mcpadapt</a>, an open-source bridge between agent frameworks and <a href="https://www.anthropic.com/news/model-context-protocol" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> servers. The kind of work that doesn't make a slide deck but quietly fixes friction for everyone downstream of it.`,
   },
   {
     period: '2024',
     title: 'FDA challenge, top-5 finish',
     summary:
-      "Placed in the top five of an FDA precisionFDA challenge, representing my company on a RAG solution evaluated against regulatory standards.",
-    tags: ['Python', 'RAG', 'Regulatory'],
-    links: [
-      { label: 'Challenge results', href: 'https://precision.fda.gov/challenges/34/results' },
-    ],
-  },
-  {
-    period: '2024',
-    title: 'POC studio',
-    summary:
-      'Built end-to-end proofs of concept for clients across manufacturing and life sciences. Most of the work was translating vague problem statements into minimum viable products that stakeholders could actually click on.',
-    tags: ['Python', 'Streamlit', 'Docker'],
+      `Top-5 finish in a <a href="https://precision.fda.gov/challenges/34/results" target="_blank" rel="noopener noreferrer">precisionFDA challenge</a> with a regulatory-compliant RAG and its own evaluation harness. Built so the answers were traceable enough for regulators to read, not just for users to nod at.`,
   },
 ];
 
@@ -86,7 +70,7 @@ const certs = [
   },
   {
     year: 'Nov 2021',
-    title: 'Huawei Seeds For The Future, finalist',
+    title: 'Huawei Seeds For The Future, top 3.6%',
     issuer: 'Huawei',
     href: 'https://magazine.unibo.it/archivio/2021/12/17/team-con-studenti-unibo-vincitore-al-seeds-for-the-future',
     credentialLabel: 'Read the article',
@@ -144,15 +128,16 @@ const sideQuests = [
         </p>
         <div class="prose">
           <p>
-            If your idea of fun is digging into the messy details instead of waving hands at slide
-            decks, we are already friends. I spend most of my time turning data and machine learning
-            into things that actually work outside a Jupyter notebook, which is where most "AI"
-            quietly goes to die.
+            If your idea of fun is digging into the messy details instead of waving hands at a slide
+            deck, we are already friends. The work I keep coming back to has one thing in common: the
+            answer matters enough that no one gets to fake it. Regulators have to read it, researchers
+            have to trust it, or factory floors have to act on it. That tends to leave behind the
+            AI-on-stage version and keep the AI-on-disk version, which is the one I find interesting.
           </p>
           <p>
-            When I am not doing that, I am either outside pretending I have a balanced life, reading
+            When I am not doing that, I am outside pretending I have a balanced life, reading
             something I cannot put down, or deep into a manga binge I will regret the next morning.
-            I also bake sourdough, which is controlled fermentation dressed up as a hobby.
+            I also bake sourdough: controlled fermentation dressed up as a hobby. Same job, really.
           </p>
         </div>
         <div class="hero__actions">
@@ -186,22 +171,14 @@ const sideQuests = [
                 {entry.role}
                 <span class="entry__company">
                   <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
-                  {entry.company}
+                  {entry.companyHref ? (
+                    <a href={entry.companyHref} target="_blank" rel="noopener noreferrer">{entry.company}</a>
+                  ) : (
+                    entry.company
+                  )}
                 </span>
               </h3>
               <p class="entry__summary">{entry.summary}</p>
-              {entry.tags && entry.tags.length > 0 && (
-                <p class="entry__tags marginalia">
-                  {entry.tags.map((t, idx) => (
-                    <>
-                      {idx > 0 && (
-                        <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
-                      )}
-                      <span>{t}</span>
-                    </>
-                  ))}
-                </p>
-              )}
             </div>
           </li>
         ))}
@@ -221,33 +198,7 @@ const sideQuests = [
             <p class="marginalia marginalia--year entry__year">{p.period}</p>
             <div class="entry__body">
               <h3 class="entry__title">{p.title}</h3>
-              <p class="entry__summary">
-                {p.summary}
-                {p.links && p.links.length > 0 && (
-                  <>
-                    {' ('}
-                    {p.links.map((l, idx) => (
-                      <>
-                        {idx > 0 && ', '}
-                        <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
-                      </>
-                    ))}
-                    {')'}
-                  </>
-                )}
-              </p>
-              {p.tags && p.tags.length > 0 && (
-                <p class="entry__tags marginalia">
-                  {p.tags.map((t, idx) => (
-                    <>
-                      {idx > 0 && (
-                        <span aria-hidden="true">&nbsp;&middot;&nbsp;</span>
-                      )}
-                      <span>{t}</span>
-                    </>
-                  ))}
-                </p>
-              )}
+              <p class="entry__summary" set:html={p.summary}></p>
             </div>
           </li>
         ))}
@@ -536,6 +487,19 @@ const sideQuests = [
     color: var(--color-ink-soft);
   }
 
+  .entry__company a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklch, var(--color-rule) 70%, transparent);
+    transition: color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .entry__company a:hover {
+    color: var(--color-terracotta);
+    border-bottom-color: var(--color-terracotta);
+  }
+
   .entry__summary {
     color: var(--color-ink);
     font-size: 1.025rem;
@@ -543,7 +507,9 @@ const sideQuests = [
     max-width: 68ch;
   }
 
-  .entry__summary a {
+  /* :global(a) so the rule also reaches anchors injected via set:html
+     (Selected Projects summaries), which don't carry Astro's scoping attribute. */
+  .entry__summary :global(a) {
     color: var(--color-terracotta);
     text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -553,13 +519,9 @@ const sideQuests = [
                 text-decoration-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .entry__summary a:hover {
+  .entry__summary :global(a:hover) {
     color: var(--color-terracotta-deep);
     text-decoration-color: var(--color-terracotta-deep);
-  }
-
-  .entry__tags {
-    color: var(--color-ink-soft);
   }
 
   .entry:hover .entry__year {
